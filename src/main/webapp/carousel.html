@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>轮播</title>
+		<link rel="stylesheet" type="text/css" href="js/layui/css/layui.css" />
+		<style type="text/css">
+			.layui-upload-img {
+				width: 100px;
+				height: 100px;
+			}
+			.carousel-img-up {
+				width: auto;
+				height: 280px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="layui-carousel" id="test1">
+			<div carousel-item>
+				<div class="carousel-img0">条目1</div>
+				<div class="carousel-img1">条目2</div>
+				<div class="carousel-img2">条目3</div>
+				<div class="carousel-img3">条目4</div>
+
+			</div>
+		</div>
+		<div class="layui-upload">
+			<button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
+			<div class="layui-upload-list">
+				<table class="layui-table">
+					<thead>
+						<tr>
+							<th>文件名</th>
+							<th>链接</th>
+							<th>大小</th>
+							<th>状态</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody id="demoList"></tbody>
+				</table>
+			</div>
+			<button type="button" class="layui-btn" id="testListAction">开始上传</button>
+		</div>
+	</body>
+	<script src="js/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		layui.use(['carousel', 'upload', 'jquery', 'layer'], function() {
+			var carousel = layui.carousel;
+			var upload = layui.upload;
+			var $ = layui.$;
+			var layer = layui.layer;
+			//建造实例
+			carousel.render({
+				elem: '#test1',
+				width: '100%' //设置容器宽度
+				,
+				arrow: 'always' //始终显示箭头
+				//,anim: 'updown' //切换动画方式
+			});
+
+			var demoListView = $('#demoList'),
+				uploadListIns = upload.render({
+					elem: '#testList',
+					url: '/upload/',
+					multiple: true,
+					auto: false,
+					bindAction: '#testListAction',
+					accept: 'images',
+					choose: function(obj) {
+						var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+						var num = 0;
+						//读取本地文件
+						obj.preview(function(index, file, result) {
+							var tr = $(['<tr id="upload-' + index + '">', '<td>' + file.name + '</td>',
+								'<td><input type="text" ></td>', '<td>' + (file.size / 1014).toFixed(
+									1) + 'kb</td>', '<td>等待上传</td>', '<td>',
+								'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>',
+								'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>', '</td>', '</tr>'
+							].join(''));
+							
+							//单个重传
+							tr.find('.demo-reload').on('click', function() {
+								obj.upload(index, file);
+							});
+							//删除
+							tr.find('.demo-delete').on('click', function() {
+								delete files[index]; //删除对应的文件
+								tr.remove();
+								lunbo.remove();
+								uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+								num--;
+							});
+							demoListView.append(tr);
+							///
+							var lunbo =$('<img src="' + result + '" alt="' + file.name +
+								'" class="carousel-img-up" >');
+							$('.carousel-img' + num + '').append(lunbo);
+							num++;
+						});
+					},
+					before: function(obj) {
+						obj.preview(function(index, file, result) {
+						});
+					},
+					done: function(res) {
+						if (res.code > 0) {
+							return layer.msg('上传失败')
+						}
+					}
+				});
+		});
+	</script>
+</html>

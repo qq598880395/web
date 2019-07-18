@@ -1,0 +1,84 @@
+body{
+	background: #F6FFFC;
+}
+.header{
+	
+
+	}
+.header div{
+}
+	
+/*滚动条*/
+		::-webkit-scrollbar {
+            width: 5px; /*对垂直流动条有效*/
+            height: 5px; /*对水平流动条有效*/
+        }
+
+        /*定义滚动条的轨道颜色、内阴影及圆角*/
+        ::-webkit-scrollbar-track{
+          -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-color: rosybrown;
+            border-radius: 3px;
+						display: none;
+        }
+
+       /*定义滑块颜色、内阴影及圆角*/
+        ::-webkit-scrollbar-thumb{
+            border-radius: 7px;
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-color: #E8E8E8;
+        }
+
+        /*定义两端按钮的样式*/
+        ::-webkit-scrollbar-button {
+            
+        }
+
+        /*定义右下角汇合处的样式*/
+       ::-webkit-scrollbar-corner {
+           
+        }
+
+.inputbox{
+	margin: 5% 0 ;
+}
+.book{
+	padding-top: 5px;
+	padding-bottom: 5%;
+	background: #EAFFFD;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+}
+.book h3{
+	padding-bottom: 5%;
+	font-size: 20px;
+	font-family: "arial narrow";
+	font-weight: bold;
+	
+}
+
+.home-menu{
+				background-color: #EAFFFD;
+				border-top-right-radius: 10px;
+				border-top-left-radius: 10px;
+			}
+			.home-menu-list:hover{
+				position: relative;
+				top: 3px;
+			}
+			.home-list-node{
+				padding: 1% 2%;
+			}
+			.home-node-icon{
+				text-align: center;
+			}
+			.home-node-text{
+				padding-top: 10px;
+				text-align: center;
+				font-family: "微软雅黑";
+			}
+			.home-icon-img{
+				width: 50%;
+			}
+
+
