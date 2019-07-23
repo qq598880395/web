@@ -110,7 +110,7 @@
 					</div>
 				</div>
 			</div>
-			<p id="viewht"></p>
+			<p id="viewht" style="display: none;"></p>
 		</div>
 
 
@@ -119,6 +119,7 @@
 			//JavaScript代码区域
 			layui.use('element', function() {
 				var element = layui.element;
+
 			});
 
 			layui.use(['jquery', 'layer'], function() {
@@ -131,10 +132,15 @@
 					var obj = document.getElementById("view").contentWindow;
 					var ifmObj = obj.document.getElementById("html").innerHTML;
 					document.getElementById("viewht").innerHTML = ifmObj;
+					$(".control").remove();
+					$("#viewht").html()
 				})
-
+				
+				
 
 			});
+			
+				
 		</script>
 	</body>
 </html>

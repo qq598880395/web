@@ -32,10 +32,10 @@
 		
      
     <script>
-			var ins;
+			var ins,$,files;
 		
 		layui.use(['jquery','upload','carousel','layer'], function() {
-			var $ = layui.jquery,
+			$ = layui.jquery,
 				layer = layui.layer,
 				upload = layui.upload;
 				
@@ -50,8 +50,6 @@
 					,autoplay: 'true'
 				});
 				
-				
-				
 				//jquery内容 添加条目
 				$("#addEntry").click(function(){
 					var entry = document.createElement("div");
@@ -60,12 +58,15 @@
 					$(".carousel-item").append(entry);
 					ins.reload();	//重置轮播		
 				})
-				
+				//删除条目
 				$("#deleteEntry").click(function(){
 					var num = $(".carousel-item div").length;
 					if(num!==null&& num>2){
 						$(".carousel-item").children().last().remove();
 						ins.reload();	//重置轮播	
+						index = $("#demoList").children().length-1;
+						delete files[index];
+						$("#demoList").children().last().remove();
 					}else{
 						layer.tips('轮播条目至少两条','#deleteEntry');
 					}
@@ -82,21 +83,17 @@
 						accept: 'images',
 						choose: function(obj) {
 							var failNum = 0;
-							var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+							//files改为全局变量
+							files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
 							var num = 0;
 							//读取本地文件
 							obj.preview(function(index, file, result) {
 								var tr = $(['<tr id="upload-' + index + '">',
 									'<td><input type="text" ></td>', '<td>' + (file.size / 1014).toFixed(
 										1) + 'kb</td>', '<td>等待上传</td>', '<td>',
-									'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>',
 									'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>', '</td>', '</tr>'
 								].join(''));
 								
-								//单个重传
-								tr.find('.demo-reload').on('click', function() {
-									obj.upload(index, file);
-								});
 								//删除
 								tr.find('.demo-delete').on('click', function() {
 									delete files[index]; //删除对应的文件

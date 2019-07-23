@@ -17,9 +17,9 @@
 
 		<div class="header">
 			<!-- 顶部导航栏-->
-			<ul class="layui-nav" lay-filter="">
-				<li class="layui-nav-item"><a href="">woos酒店</a></li>
-				<li class="layui-nav-item layui-this"><a href="">简介</a></li>
+			<ul class="layui-nav" lay-filter="" style="background: linear-gradient(40deg,rgb(241, 44, 63) 0%,rgb(255, 76, 100) 100%);">
+				<li class="layui-nav-item" style="font-weight: bold;font-size:17px ;">woos酒店</li>
+				<li class="layui-nav-item layui-this"><a href="">首页</a></li>
 				<li class="layui-nav-item">
 					<a href="javascript:;">酒店服务</a>
 					<dl class="layui-nav-child">
@@ -39,7 +39,7 @@
 		<div class="lunbo"></div>
 		<button id="addlunbo" class="layui-btn control layui-btn-sm">添加轮播</button>
 		<button id="deletelunbo" class="layui-btn layui-btn-danger layui-btn-sm control" style="display: none;">移除轮播</button>
-		
+		<hr class="layui-bg-gray" style="height: 5px;">
 <!-- 模块存放位置 -->
 		<div id="new-div">
 
@@ -53,7 +53,8 @@
 
 
 		<!-- 底部导航栏-->
-		<div class="layui-fluid nav-bottom">
+		<div class="footer">
+			<div class="layui-fluid nav-bottom">
 			<div class="layui-row nav-bottom-list">
 				<div class="layui-col-xs4">
 					<div class="nav-bottom-node">
@@ -73,7 +74,9 @@
 
 			</div>
 		</div>
-
+		
+			
+		</div>
 		<script src="js/layui/layui.js" type="text/javascript" charset="utf-8"></script>
 		<script>
 			//导入layui后使用内部jQuery
@@ -103,36 +106,45 @@
 
 				//添加新框增加div,ID名从templateDiv开始自增
 				$("#selectTemplate").click(function() {
-					var templateDiv;
-					var button;
+					var templateDiv,button,hr;
 					layer.open({
 						title: '选择添加的组件',
-						btn: ['酒店预订', '模块导航', '简介模块', "酒店预订"] //可以无限个按钮
+						btn: ['酒店预订', '模块导航', '简介模块'] //可以无限个按钮
 							,
 						btn1: function(index, layero) {
 							//按钮【按钮一】的回调 添加酒店预订模板
 							addNewDiv();
 							addDelbutton();
+							addhr();
 							$(templateDiv).load("template/book.html",function(){
 								$(templateDiv).append(button);
+								$(templateDiv).append(hr);
 								$('#new-div').append(templateDiv);
+								
 							});
 						},
 						btn2: function(index, layero) {
 							//按钮二回调,添加模块导航
 							addNewDiv();
 							addDelbutton();
+							addhr();
 							$(templateDiv).load("template/modnav.html",function(){
 								$(templateDiv).append(button);
+								$(templateDiv).append(hr);
 								$('#new-div').append(templateDiv);
 							});
 	
 						},
 						btn3: function(index, layero) {
-							alert("3");
-						},
-						btn4: function(index, layero) {
-							alert("3");
+							//简介模板
+							addNewDiv();
+							addDelbutton();
+							addhr();
+							$(templateDiv).load("template/article.html",function(){
+								$(templateDiv).append(button);
+								$(templateDiv).append(hr);
+								$('#new-div').append(templateDiv);
+							});
 						}
 					});
 					
@@ -152,6 +164,11 @@
 						
 					}
 					
+					//添加分割线
+					var addhr = function(){
+						hr = $("<hr class='layui-bg-gray' style='height: 5px;'>");
+					}
+					
 					
 				})
 				
@@ -159,6 +176,8 @@
 			function delTemplate(a){
 				$(a).parent().remove();
 			}
+			
+			
 			
 		</script>
 
