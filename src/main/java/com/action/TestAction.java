@@ -1,4 +1,4 @@
-package com.woos.action;
+package com.action;
 
 public class TestAction {
 }

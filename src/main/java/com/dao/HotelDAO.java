@@ -1,7 +1,7 @@
-package com.woos.dao;
+package com.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.woos.pojo.Hotel;
+import com.pojo.Hotel;
 
 public interface HotelDAO extends BaseMapper<Hotel> {
 }

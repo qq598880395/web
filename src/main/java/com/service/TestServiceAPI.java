@@ -1,4 +1,4 @@
-package com.woos.api.service;
+package com.service;
 
 public interface TestServiceAPI {
 }

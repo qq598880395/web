@@ -1,4 +1,4 @@
-package com.woos.dao;
+package com.dao;
 
 public interface TestDAO {
 }

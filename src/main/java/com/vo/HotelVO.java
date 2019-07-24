@@ -1,4 +1,4 @@
-package com.woos.vo;
+package com.vo;
 
 public class HotelVO {
 }

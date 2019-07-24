@@ -1,4 +1,4 @@
-package com.woos.service;
+package com.service;
 
 public class TestService {
 }

@@ -1,4 +1,4 @@
-package com.woos.pojo;
+package com.pojo;
 
 import java.io.Serializable;
 
