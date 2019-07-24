@@ -104,6 +104,11 @@
 									uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
 									num--;
 								});
+
+                                //单个重传
+                                tr.find('.demo-reload').on('click', function(){
+                                    obj.upload(index, file);
+                                });
 								
 								
 								if($('.nothave').length >0){
@@ -111,7 +116,7 @@
 								///
 								var ifhave = $('.nothave').first();
 								var lunbo =$('<img src="' + result + '" alt="' + file.name +
-									'" class="carousel-img-up" >');
+									'" class="carousel-img-up" width="100%" >');
 
 								ifhave.append(lunbo);
 								ifhave.attr('class','carousel-img carousel-img'+num+' have');
@@ -126,11 +131,9 @@
 							obj.preview(function(index, file, result) {
 							});
 						},
-						done: function(res) {
-						    alert(res.code)
-                            if (res.code == 0) { //上传成功
-                                var tr = demoListView.find('tr#upload-' + index),
-                                    tds = tr.children();
+						done: function(res, index, upload) {
+                            if (res.code == "0") { //上传成功
+                                var tds =  $('#upload-' + index).children();
                                 tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
                                 tds.eq(3).html(''); //清空操作
                                 return delete this.files[index]; //删除文件队列已经上传成功的文件
@@ -138,6 +141,7 @@
                             this.error(index, upload);
 						},
                         error: function(index, upload) {
+						    //上传出错
                             var tr = demoListView.find('tr#upload-' + index),
                                 tds = tr.children();
                             tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');

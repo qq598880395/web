@@ -45,21 +45,21 @@ public class UpLoadAction {
                 out.close();
             } catch (IOException e) {
                 res.put("code", 1);
-                res.put("msg", "error");
+                res.put("msg", "上传出错");
                 res.put("data", resUrl);
                 System.out.println("catch");
                 return res;
             }
             res.put("code", 0);
-            res.put("msg", "ok");
+            res.put("msg", "上传成功");
             res.put("data", resUrl);
             System.out.println("xxx");
             return res;
         } else {
-            res.put("code", -1);
-            res.put("msg", "ok");
+            res.put("code", 0);
+            res.put("msg", "上传为空");
             res.put("data", resUrl);
-            System.out.println("null");
+            System.out.println("nulls");
             return res;
         }
 
