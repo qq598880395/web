@@ -2,25 +2,17 @@ package com.action;
 
 import cn.hutool.json.JSONObject;
 import com.mysql.jdbc.CharsetMapping;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartRequest;
 
-import javax.json.JsonObject;
-import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -38,6 +30,13 @@ public class UpLoadAction {
         if (!file.isEmpty()) {
             Map<String, String> resObj = new HashMap<>(CharsetMapping.MAP_SIZE);
             try {
+                //得到旧文件名
+                String oldFileName =file.getOriginalFilename();
+                //得到后缀名
+                int index =oldFileName.lastIndexOf(".");
+                String extName =oldFileName.substring(index);
+                //新文件名
+                String newFileName=System.nanoTime()+extName;
                 BufferedOutputStream out = new BufferedOutputStream(
                         new FileOutputStream(new File(uploadPath, file.getOriginalFilename())));
                 out.write(file.getBytes());
