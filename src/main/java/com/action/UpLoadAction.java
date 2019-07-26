@@ -38,7 +38,7 @@ public class UpLoadAction {
                 //新文件名
                 String newFileName=System.nanoTime()+extName;
                 BufferedOutputStream out = new BufferedOutputStream(
-                        new FileOutputStream(new File(uploadPath, file.getOriginalFilename())));
+                        new FileOutputStream(new File(uploadPath, newFileName)));
                 out.write(file.getBytes());
                 out.flush();
                 out.close();
@@ -46,19 +46,16 @@ public class UpLoadAction {
                 res.put("code", 1);
                 res.put("msg", "上传出错");
                 res.put("data", resUrl);
-                System.out.println("catch");
                 return res;
             }
             res.put("code", 0);
             res.put("msg", "上传成功");
             res.put("data", resUrl);
-            System.out.println("xxx");
             return res;
         } else {
             res.put("code", 0);
             res.put("msg", "上传为空");
             res.put("data", resUrl);
-            System.out.println("nulls");
             return res;
         }
 

@@ -124,6 +124,7 @@
 								}else{
 									failNum++;
 									layer.tips(failNum+'张添加失败,图片超出条目数量!','#testList');
+									delete files[index];
 								}
 							});
 						},
