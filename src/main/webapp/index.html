@@ -66,7 +66,7 @@
 						<li class="layui-nav-item">
 							<a href="javascript:;">微官网</a>
 							<dl class="layui-nav-child">
-								<dd><a href="index2.html" target="view">微官网编辑</a></dd>
+								<dd><a href="page/index2.html" target="view">微官网编辑</a></dd>
 								<dd><a href="javascript:;">历史模板</a></dd>
 								<dd><a href="">超链接</a></dd>
 							</dl>
@@ -89,7 +89,7 @@
 			<div class="layui-body">
 				<div style="width: 500px;height:844px;float: left;">
 						<iframe id="view" name="view" style="width: 500px;height: 844px;padding: 50px;"
-						 frameborder="0" src="index2.html">
+						 frameborder="0" src="page/index2.html">
 				
 						</iframe>
 				</div>
@@ -104,7 +104,7 @@
 					<div style="position: relative;">
 						<img src="img/Sketch004.png" width="411px;" style="position:absolute;" />
 						<iframe id="preview" name="preview" style="width: 363px;height: 730px;position: absolute;left:22px;top: 70px;border-bottom-left-radius: 35px;border-bottom-right-radius: 35px;border-bottom:solid 10px #000000;"
-						 frameborder="0" src="index2.html">
+						 frameborder="0" src="page/index2.html">
 				
 						</iframe>
 					</div>
@@ -133,12 +133,44 @@
 					var ifmObj = obj.document.getElementById("html").innerHTML;
 					document.getElementById("viewht").innerHTML = ifmObj;
 					$(".control").remove();
-					$("#viewht").html()
+					var htmltext = $("#viewht").html();
+					alert(htmltext);
+					$.ajax({
+						url : getRootPath()+"/createHTML",
+						type : "post",
+						data : {"htmltext":htmltext},
+						datatype:"json",
+						success : function(data) {
+							var jsondata = JSON.parse(data);
+							var indexPageUrl = getRootPath()+jsondata.url;
+							$("#preview").attr("src",indexPageUrl);
+
+							alert(jsondata.url);
+							alert(jsondata.msg);
+						}
+					});
 				})
 				
 				
 
 			});
+
+
+			var getRootPath = function() {
+				// http://localhost:8083/uimcardprj/share/meun.jsp
+				var curWwwPath = window.document.location.href;
+				// uimcardprj/share/meun.jsp
+				var pathName = window.document.location.pathname;
+				var pos = curWwwPath.indexOf(pathName);
+				// http://localhost:8083
+				var localhostPaht = curWwwPath.substring(0, pos);
+				// uimcardprj
+				var projectName = pathName
+						.substring(0, pathName.substr(1).indexOf('/') + 1);
+				if (projectName == "/weixin" || projectName == "/admin"  || projectName == "/pc")
+					projectName = "";
+				return(localhostPaht + projectName);
+			}
 			
 				
 		</script>

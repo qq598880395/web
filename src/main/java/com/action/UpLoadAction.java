@@ -37,6 +37,10 @@ public class UpLoadAction {
                 String extName =oldFileName.substring(index);
                 //新文件名
                 String newFileName=System.nanoTime()+extName;
+                File savePathFile =new File(uploadPath);
+                if (savePathFile.exists()==false){
+                    savePathFile.mkdirs();
+                }
                 BufferedOutputStream out = new BufferedOutputStream(
                         new FileOutputStream(new File(uploadPath, newFileName)));
                 out.write(file.getBytes());
@@ -65,49 +69,7 @@ public class UpLoadAction {
 
 
 
-//    public JSONObject uploadImg(Long classesId, HttpServletRequest request) throws Exception{
-//        JSONObject res = new JSONObject();
-//        JSONObject resUrl = new JSONObject();
-//        try {
-//            // Create a factory for disk-based file items
-//            DiskFileItemFactory factory = new DiskFileItemFactory();
-//
-//            // Set factory constraints
-//            factory.setSizeThreshold(4096); // 设置缓冲区大小，这里是4kb
-//            factory.setRepository(tempPathFile);// 设置缓冲区目录
-//
-//            // Create a new file upload handler
-//            ServletFileUpload upload = new ServletFileUpload(factory);
-//
-//            // Set overall request size constraint
-//            upload.setSizeMax(4194304); // 设置最大文件尺寸，这里是4MB
-//
-//            List<FileItem> items = upload.parseRequest(request);// 得到所有的文件
-//
-//            System.out.println(items.size());
-//            Iterator<FileItem> i = items.iterator();
-//            while (i.hasNext()) {
-//                FileItem fi = (FileItem) i.next();
-//                String fileName = fi.getName();
-//                if (fileName != null) {
-//                    File fullFile = new File(new String(fi.getName().getBytes(), "utf-8")); // 解决文件名乱码问题
-//                    File savedFile = new File(uploadPath, fullFile.getName());
-//                    fi.write(savedFile);
-//                }
-//            }
-//            System.out.print("上传成功！");
-//            res.put("code", 0);
-//            res.put("msg", "");
-//            res.put("data", resUrl);
-//
-//        } catch (Exception e) {
-//
-//        }
-//
-//        return res;
-//    }
-//
-//
+
 //    public String upload(MultipartRequest mr) throws IOException {
 //        //从请求中取得文件名
 //        Iterator<String> it =mr.getFileNames();

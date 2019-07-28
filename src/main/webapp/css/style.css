@@ -94,6 +94,7 @@ body{
 	height: 5%;
 }
 .nav-bottom-list{
+	padding: 3px;
 	height: 100%;
 }
 .nav-bottom-node{
