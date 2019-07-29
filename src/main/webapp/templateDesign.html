@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="js/layui/css/layui.css">
+    <script src="js/layui/layui.js"></script>
+</head>
+<body>
+<div style="width: 500px;height:844px;float: left;">
+    <iframe id="design" name="design" style="width: 500px;height: 844px;padding: 50px;"
+            frameborder="0" src="page/index2.html">
+
+    </iframe>
+</div>
+
+
+<!-- 提交网页,通过ajax上传网页代码生成新的HTML网页 -->
+<div style="float: left;padding: 100px;margin-top: 250px;">
+    <button id="submitHTML" type="button" class="layui-btn layui-btn-radius">提交网页</button>
+</div>
+<!-- 点击提交后实现网页的预览效果 -->
+<div style="width: 411px;height:844px;float: left;">
+    <div style="position: relative;">
+        <img src="img/Sketch004.png" width="411px;" style="position:absolute;" />
+        <iframe id="preview" name="preview" style="width: 363px;height: 730px;position: absolute;left:22px;top: 70px;border-bottom-left-radius: 35px;border-bottom-right-radius: 35px;border-bottom:solid 10px #000000;"
+                frameborder="0" src="page/index2.html">
+
+        </iframe>
+    </div>
+</div>
+</div>
+<p id="viewht" style="display: none;"></p>
+
+<script>
+    layui.use(['jquery', 'layer'], function() {
+        var $ = layui.jquery,
+            layer = layui.layer;
+
+        //后面就跟你平时使用jQuery一样
+
+        $("#submitHTML").click(function() {
+            var obj = document.getElementById("design").contentWindow;
+            var ifmObj = obj.document.getElementById("html").innerHTML;
+            document.getElementById("viewht").innerHTML = ifmObj;
+            $(".control").remove();
+            var htmltext = $("#viewht").html();
+            alert(htmltext);
+            $.ajax({
+                url : getRootPath()+"/createHTML",
+                type : "post",
+                data : {"htmltext":htmltext},
+                datatype:"json",
+                success : function(data) {
+                    var jsondata = JSON.parse(data);
+                    var indexPageUrl = getRootPath()+jsondata.url;
+                    $("#preview").attr("src",indexPageUrl);
+
+                    alert(jsondata.url);
+                    alert(jsondata.msg);
+                }
+            });
+        })
+
+
+
+    });
+
+
+    var getRootPath = function() {
+        // http://localhost:8083/uimcardprj/share/meun.jsp
+        var curWwwPath = window.document.location.href;
+        // uimcardprj/share/meun.jsp
+        var pathName = window.document.location.pathname;
+        var pos = curWwwPath.indexOf(pathName);
+        // http://localhost:8083
+        var localhostPaht = curWwwPath.substring(0, pos);
+        // uimcardprj
+        var projectName = pathName
+            .substring(0, pathName.substr(1).indexOf('/') + 1);
+        if (projectName == "/weixin" || projectName == "/admin"  || projectName == "/pc")
+            projectName = "";
+        return(localhostPaht + projectName);
+    }
+</script>
+</body>
+</html>

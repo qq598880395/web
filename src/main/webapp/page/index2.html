@@ -52,7 +52,8 @@
 
 
 
-
+        <br/>
+        <br/>
 		<!-- 底部导航栏-->
 		<div class="footer">
 			<div class="layui-fluid nav-bottom">
@@ -93,7 +94,7 @@
 				//添加轮播
 				$("#addlunbo").click(function() {
 
-					$(".lunbo").load("../template/lunbo.html");
+					$(".lunbo").load(getRootPath()+"/template/lunbo.html");
 					$("#addlunbo").hide();
 					$("#deletelunbo").show();
 				})
@@ -117,7 +118,7 @@
 							addNewDiv();
 							addDelbutton();
 							addhr();
-							$(templateDiv).load("../template/book.html",function(){
+							$(templateDiv).load(getRootPath()+"/template/book.html",function(){
 								$(templateDiv).append(button);
 								$(templateDiv).append(hr);
 								$('#new-div').append(templateDiv);
@@ -129,7 +130,7 @@
 							addNewDiv();
 							addDelbutton();
 							addhr();
-							$(templateDiv).load("../template/modnav.html",function(){
+							$(templateDiv).load(getRootPath()+"/template/modnav.html",function(){
 								$(templateDiv).append(button);
 								$(templateDiv).append(hr);
 								$('#new-div').append(templateDiv);
@@ -141,7 +142,7 @@
 							addNewDiv();
 							addDelbutton();
 							addhr();
-							$(templateDiv).load("../template/article.html",function(){
+							$(templateDiv).load(getRootPath()+"/template/article.html",function(){
 								$(templateDiv).append(button);
 								$(templateDiv).append(hr);
 								$('#new-div').append(templateDiv);
@@ -177,7 +178,22 @@
 			function delTemplate(a){
 				$(a).parent().remove();
 			}
-			
+
+			var getRootPath = function() {
+				// http://localhost:8083/uimcardprj/share/meun.jsp
+				var curWwwPath = window.document.location.href;
+				// uimcardprj/share/meun.jsp
+				var pathName = window.document.location.pathname;
+				var pos = curWwwPath.indexOf(pathName);
+				// http://localhost:8083
+				var localhostPaht = curWwwPath.substring(0, pos);
+				// uimcardprj
+				var projectName = pathName
+						.substring(0, pathName.substr(1).indexOf('/') + 1);
+				if (projectName == "/weixin" || projectName == "/admin"  || projectName == "/pc")
+					projectName = "";
+				return(localhostPaht + projectName);
+			}
 			
 			
 		</script>
