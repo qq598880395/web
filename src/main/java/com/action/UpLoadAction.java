@@ -2,6 +2,9 @@ package com.action;
 
 import cn.hutool.json.JSONObject;
 import com.mysql.jdbc.CharsetMapping;
+import com.service.ImgService;
+import com.service.PageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,10 +18,13 @@ import java.util.Map;
 @Controller
 public class UpLoadAction {
 
+    @Autowired
+    private ImgService imgService;
     File tempPathFile;
 
     private String uploadPath = System.getProperty("ROOT") + "/tmp"; // 上传文件的目录
 
+    //上传图片
     @RequestMapping("/uploadImage")
     @ResponseBody
     public JSONObject uploadImage(@RequestParam("file") MultipartFile file) {
@@ -43,6 +49,7 @@ public class UpLoadAction {
                 out.write(file.getBytes());
                 out.flush();
                 out.close();
+                imgService.addImage("tmp/"+newFileName,null);
             } catch (IOException e) {
                 res.put("code", 1);
                 res.put("msg", "上传出错");
