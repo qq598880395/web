@@ -46,7 +46,7 @@
             var htmltext = $("#viewht").html();
             alert(htmltext);
             $.ajax({
-                url : getRootPath()+"/createHTML",
+                url : getRootPath()+"/upload/createHTML",
                 type : "post",
                 data : {"htmltext":htmltext},
                 datatype:"json",

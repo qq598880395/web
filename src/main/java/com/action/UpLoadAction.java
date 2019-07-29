@@ -8,13 +8,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-
+@RequestMapping("/upload")
 @Controller
 public class UpLoadAction {
 
@@ -22,7 +19,7 @@ public class UpLoadAction {
 
     private String uploadPath = System.getProperty("ROOT") + "/tmp"; // 上传文件的目录
 
-    @RequestMapping("/upload")
+    @RequestMapping("/uploadImage")
     @ResponseBody
     public JSONObject uploadImage(@RequestParam("file") MultipartFile file) {
         JSONObject res = new JSONObject();
@@ -64,6 +61,36 @@ public class UpLoadAction {
         }
 
     }
+
+    //上传页面
+        private String pageurl = System.getProperty("ROOT") + "/page"; // 上传文件的目录
+        @ResponseBody
+        @RequestMapping(value="/createHTML")
+        public String createHTML(String htmltext) throws IOException {
+            htmltext = "<!DOCTYPE html>\n" +"<html>"+htmltext+"</html>";
+            System.out.println(htmltext);
+
+            String pageName = System.currentTimeMillis()+"";
+            File file = new File(pageurl+"/"+pageName+".html");
+            // 创建一个新文件
+            FileOutputStream fos = new FileOutputStream(file);
+            OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
+            osw.write(htmltext);
+            // 关闭输出流
+            osw.close();
+            System.out.println("输入完成");
+
+
+
+            com.alibaba.fastjson.JSONObject json =new com.alibaba.fastjson.JSONObject();
+            json.put("code",200);
+            json.put("msg","success");
+            json.put("url","/page/"+pageName+".html");
+            return json.toString();
+        }
+
+
+
 }
 
 
