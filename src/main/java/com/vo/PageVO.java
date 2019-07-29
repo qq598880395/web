@@ -1,17 +1,7 @@
-package com.pojo;
+package com.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.io.Serializable;
-@TableName("page")
-public class Page implements Serializable {
-    @TableId(type= IdType.AUTO)
+public class PageVO {
     private Integer page_id;
-
-    @TableField
     private String page_name;
     private String page_src;
     private String page_status;
