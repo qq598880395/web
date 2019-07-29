@@ -17,7 +17,7 @@
 
 	<!-- 映射文件 -->
 	<mappers>
-	    <mapper resource="com/sunjob/mapper/StudentMapper.xml"/>
+	    <mapper resource="com.wools.mapper/PageMapper.xml"/>
 	</mappers>
 	
 </configuration>

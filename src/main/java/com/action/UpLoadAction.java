@@ -2,8 +2,8 @@ package com.action;
 
 import cn.hutool.json.JSONObject;
 import com.mysql.jdbc.CharsetMapping;
-import com.service.ImgService;
 import com.service.PageService;
+import com.vo.PageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,14 +17,12 @@ import java.util.Map;
 @RequestMapping("/upload")
 @Controller
 public class UpLoadAction {
-
     @Autowired
-    private ImgService imgService;
-    File tempPathFile;
+    private PageService pageService;
 
-    private String uploadPath = System.getProperty("ROOT") + "/tmp"; // 上传文件的目录
+    private String pageurl = System.getProperty("ROOT") + "/page"; // 上传页面的目录
+    private String uploadPath = System.getProperty("ROOT") + "/tmp"; // 上传图片的目录
 
-    //上传图片
     @RequestMapping("/uploadImage")
     @ResponseBody
     public JSONObject uploadImage(@RequestParam("file") MultipartFile file) {
@@ -49,7 +47,6 @@ public class UpLoadAction {
                 out.write(file.getBytes());
                 out.flush();
                 out.close();
-                imgService.addImage("tmp/"+newFileName,null);
             } catch (IOException e) {
                 res.put("code", 1);
                 res.put("msg", "上传出错");
@@ -70,7 +67,6 @@ public class UpLoadAction {
     }
 
     //上传页面
-        private String pageurl = System.getProperty("ROOT") + "/page"; // 上传文件的目录
         @ResponseBody
         @RequestMapping(value="/createHTML")
         public String createHTML(String htmltext) throws IOException {
@@ -87,7 +83,13 @@ public class UpLoadAction {
             osw.close();
             System.out.println("输入完成");
 
-
+            //页面信息存入数据库
+            PageVO vo = new PageVO();
+            vo.setPage_name(pageName);
+            vo.setPage_src("/page/"+pageName+".html");
+            vo.setPage_status("no");
+            pageService.addPage(vo);
+            pageService.updataPage(pageName);
 
             com.alibaba.fastjson.JSONObject json =new com.alibaba.fastjson.JSONObject();
             json.put("code",200);
