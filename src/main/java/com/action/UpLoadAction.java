@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,11 +25,15 @@ public class UpLoadAction {
     private ImgService imgService;
 
     private String pageurl = System.getProperty("ROOT") + "/page"; // 上传页面的目录
-    private String uploadPath = System.getProperty("ROOT") + "/tmp"; // 上传图片的目录
+    private String uploadPath = System.getProperty("ROOT") + "/img/lunbo"; // 上传图片的目录
 
     @RequestMapping("/uploadImage")
     @ResponseBody
-    public JSONObject uploadImage(@RequestParam("file") MultipartFile file) {
+    public JSONObject uploadImage(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+        String name = request.getParameter("name");
+        String href = request.getParameter("href");
+        System.out.println(name);
+        System.out.println(href);
         JSONObject res = new JSONObject();
         JSONObject resUrl = new JSONObject();
         if (!file.isEmpty()) {
@@ -50,7 +55,7 @@ public class UpLoadAction {
                 out.write(file.getBytes());
                 out.flush();
                 out.close();
-                imgService.addImage("tmp/"+uploadPath,null);
+               // imgService.addImage("img/"+newFileName,null);
             } catch (IOException e) {
                 res.put("code", 1);
                 res.put("msg", "上传出错");

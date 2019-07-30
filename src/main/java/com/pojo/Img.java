@@ -1,9 +1,17 @@
 package com.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 
+@TableName("img")
 public class Img implements Serializable {
+    @TableId(type= IdType.AUTO)
     private Integer img_id;
+    @TableField
     private String img_src;
     private String img_status;
     private Integer template_id;
