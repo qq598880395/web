@@ -2,6 +2,7 @@ package com.action;
 
 import cn.hutool.json.JSONObject;
 import com.mysql.jdbc.CharsetMapping;
+import com.service.ImgService;
 import com.service.PageService;
 import com.vo.PageVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import java.util.Map;
 public class UpLoadAction {
     @Autowired
     private PageService pageService;
+    @Autowired
+    private ImgService imgService;
 
     private String pageurl = System.getProperty("ROOT") + "/page"; // 上传页面的目录
     private String uploadPath = System.getProperty("ROOT") + "/tmp"; // 上传图片的目录
@@ -47,6 +50,7 @@ public class UpLoadAction {
                 out.write(file.getBytes());
                 out.flush();
                 out.close();
+                imgService.addImage("tmp/"+uploadPath,null);
             } catch (IOException e) {
                 res.put("code", 1);
                 res.put("msg", "上传出错");
