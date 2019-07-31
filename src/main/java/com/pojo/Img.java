@@ -12,9 +12,27 @@ public class Img implements Serializable {
     @TableId(type= IdType.AUTO)
     private Integer img_id;
     @TableField
+    private String img_name;
     private String img_src;
     private String img_status;
     private Integer template_id;
+    private String img_href;
+
+    public String getImg_name() {
+        return img_name;
+    }
+
+    public void setImg_name(String img_name) {
+        this.img_name = img_name;
+    }
+
+    public String getImg_href() {
+        return img_href;
+    }
+
+    public void setImg_href(String img_href) {
+        this.img_href = img_href;
+    }
 
     public Integer getImg_id() {
         return img_id;

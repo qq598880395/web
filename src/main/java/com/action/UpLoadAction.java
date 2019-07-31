@@ -1,9 +1,11 @@
 package com.action;
 
 import cn.hutool.json.JSONObject;
+import com.alibaba.fastjson.JSON;
 import com.mysql.jdbc.CharsetMapping;
 import com.service.ImgService;
 import com.service.PageService;
+import com.vo.ImgHrefVo;
 import com.vo.PageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 @RequestMapping("/upload")
 @Controller
@@ -27,13 +30,18 @@ public class UpLoadAction {
     private String pageurl = System.getProperty("ROOT") + "/page"; // 上传页面的目录
     private String uploadPath = System.getProperty("ROOT") + "/img/lunbo"; // 上传图片的目录
 
+
     @RequestMapping("/uploadImage")
     @ResponseBody
-    public JSONObject uploadImage(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        String name = request.getParameter("name");
-        String href = request.getParameter("href");
-        System.out.println(name);
-        System.out.println(href);
+    public JSONObject uploadImage(@RequestParam("file") MultipartFile file, String params) {
+        String href = null;
+        List<ImgHrefVo> testDemos = JSON.parseArray(params, ImgHrefVo.class);
+        for (int i = 0; i < testDemos.size(); i++) {
+            if(testDemos.get(i).getFilename().equals(file.getOriginalFilename())){
+              href = testDemos.get(i).getImg_href();
+                break;
+            }
+        }
         JSONObject res = new JSONObject();
         JSONObject resUrl = new JSONObject();
         if (!file.isEmpty()) {
@@ -53,9 +61,11 @@ public class UpLoadAction {
                 BufferedOutputStream out = new BufferedOutputStream(
                         new FileOutputStream(new File(uploadPath, newFileName)));
                 out.write(file.getBytes());
+                int n = imgService.addImage(newFileName,"img/lunbo"+newFileName,1,href);
+                System.out.println(n);
                 out.flush();
                 out.close();
-               // imgService.addImage("img/"+newFileName,null);
+               
             } catch (IOException e) {
                 res.put("code", 1);
                 res.put("msg", "上传出错");

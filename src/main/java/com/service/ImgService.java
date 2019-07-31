@@ -3,11 +3,9 @@ package com.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dao.ImgDAO;
 import com.pojo.Img;
-import com.pojo.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,10 +15,12 @@ public class ImgService {
     private ImgDAO imgDAO;
 
     //添加图片
-    public int addImage(String newFilePath,Integer tmpid){
+    public int addImage(String img_name,String newFilePath,Integer tmpid,String img_href){
         Img img=new Img();
+        img.setImg_name(img_name);
         img.setImg_src(newFilePath);
         img.setTemplate_id(tmpid);
+        img.setImg_href(img_href);
         img.setImg_status("yes");
         int n=imgDAO.insert(img);
         return n;
