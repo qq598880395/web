@@ -32,11 +32,16 @@
 <p id="viewht" style="display: none;"></p>
 
 <script>
+    var $;
     layui.use(['jquery', 'layer'], function() {
-        var $ = layui.jquery,
-            layer = layui.layer;
+        $ = layui.jquery;
+        var layer = layui.layer;
 
         //后面就跟你平时使用jQuery一样
+        $(document).ready(function () {
+            searchNowHtml();
+        })
+
 
         $("#submitHTML").click(function() {
             var obj = document.getElementById("design").contentWindow;
@@ -44,7 +49,6 @@
             document.getElementById("viewht").innerHTML = ifmObj;
             $(".control").remove();
             var htmltext = $("#viewht").html();
-            alert(htmltext);
             $.ajax({
                 url : getRootPath()+"/upload/createHTML",
                 type : "post",
@@ -63,8 +67,22 @@
 
 
 
+
+
+
     });
 
+    var searchNowHtml = function(){
+        $.ajax({
+            url : getRootPath()+"/html/searchNowHTML",
+            type : "post",
+            datatype:"json",
+            success : function(data) {
+                var jsondata = JSON.parse(data);
+                $("#preview").attr("src",getRootPath()+jsondata.page_src)
+            }
+        });
+    }
 
     var getRootPath = function() {
         // http://localhost:8083/uimcardprj/share/meun.jsp

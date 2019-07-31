@@ -26,7 +26,7 @@ public class ImgService {
         return n;
     }
 
-    //查询图片
+    //查询当前模块图片
     public List<Img> searchImgById(Integer tmpid, String imgStatus){
         QueryWrapper qw =new QueryWrapper();
         qw.eq("template_id",tmpid);
