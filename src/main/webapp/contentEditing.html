@@ -67,29 +67,49 @@
                 {field: 'img_id', title: 'ID',sort: true, fixed: 'left'}
                 ,{field: 'img_name', title: '图片名',sort: true,}
                 ,{field: 'img_href', title: '图片对应链接', sort: true,}
-                ,{field: 'img_status', title: '状态', width:80, sort: true}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+                ,{field: 'img_status', title: '是否显示', sort: true}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
             ]]
         });
 
         //监听行工具事件
-        table.on('tool(UploadedLunboImg)', function(obj){
+        table.on('tool(test)', function(obj){
             var data = obj.data;
             //console.log(obj)
             if(obj.event === 'del'){
                 layer.confirm('真的删除行么', function(index){
                     obj.del();
                     layer.close(index);
+                    //后台操作
+                    $.ajax({
+                        url : getRootPath()+"/html/delImg",
+                        type : "get",
+                        data : {"img_id":data.img_id,"img_src":data.img_src},
+                        datatype:"json",
+                        success : function(data) {
+                        }
+                    });
+
                 });
             } else if(obj.event === 'edit'){
                 layer.prompt({
-                    formType: 2
-                    ,value: data.email
+                    formType: 3
+                    ,value: data.img_href
                 }, function(value, index){
                     obj.update({
-                        email: value
+                        img_href: value
                     });
                     layer.close(index);
+                    //后台操作
+                    $.ajax({
+                        url : getRootPath()+"/html/updataImg_href",
+                        type : "get",
+                        data : {"img_href":value,"img_id":data.img_id},
+                        datatype:"json",
+                        success : function(data) {
+                            var jsondata = JSON.parse(data);
+                        }
+                    });
                 });
             }
         });

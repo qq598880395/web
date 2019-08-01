@@ -2,6 +2,7 @@ package com.action;
 
 import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSONArray;
+import com.baomidou.mybatisplus.generator.config.IFileCreate;
 import com.pojo.Img;
 import com.pojo.Page;
 import com.service.ImgService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.json.JsonArray;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +60,28 @@ public class HtmlAction {
             jsonObject.put("data",imglist);
         return jsonObject;
     }
+
+    //删除指定的图片
+    @RequestMapping(value = "/delImg")
+    public void delImg(String img_id,String img_src){
+        imgService.delImgById(img_id);
+        System.out.println(img_src);
+        File file  = new File(System.getProperty("ROOT")+img_src);
+        System.out.println(System.getProperty("ROOT")+img_src);
+        if (file.exists()==true){
+            file.delete();
+            System.out.println("文件是否存在："+file.exists());//判断文件是否删除成功
+        }
+    }
+
+    //更新图片对应的链接
+    @RequestMapping(value = "/updataImg_href")
+    public void updataImg_href(String img_href,String img_id){
+        imgService.updataImg_href(img_href,img_id);
+        System.out.println(img_href);
+        System.out.println(img_id);
+    }
+
 
 
 

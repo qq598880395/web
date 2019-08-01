@@ -61,7 +61,7 @@ public class UpLoadAction {
                 BufferedOutputStream out = new BufferedOutputStream(
                         new FileOutputStream(new File(uploadPath, newFileName)));
                 out.write(file.getBytes());
-                int n = imgService.addImage(newFileName,"img/lunbo"+newFileName,1,href);
+                int n = imgService.addImage(newFileName,"img/lunbo/"+newFileName,1,href);
                 System.out.println(n);
                 out.flush();
                 out.close();

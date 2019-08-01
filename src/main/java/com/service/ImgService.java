@@ -1,6 +1,7 @@
 package com.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.dao.ImgDAO;
 import com.pojo.Img;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,22 @@ public class ImgService {
     //查询轮播所有图片
     public List<Img> searchImgById(Integer tmpid) {
         QueryWrapper qw =new QueryWrapper();
-        System.out.println(tmpid);
         qw.eq("template_id",tmpid);
         List<Img> imgList= imgDAO.selectList(qw);
         return imgList;
+    }
+
+    public void delImgById(String img_id) {
+        QueryWrapper qw =new QueryWrapper();
+        qw.eq("img_id",img_id);
+        imgDAO.delete(qw);
+    }
+
+    public void updataImg_href(String img_href, String img_id) {
+        UpdateWrapper uw = new UpdateWrapper();
+        Img img = new Img();
+        uw.set("img_id",img_id);
+        img.setImg_href(img_href);
+        imgDAO.update(img,uw);
     }
 }
