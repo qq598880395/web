@@ -35,5 +35,12 @@ public class ImgService {
         return imgList;
     }
 
-
+    //查询轮播所有图片
+    public List<Img> searchImgById(Integer tmpid) {
+        QueryWrapper qw =new QueryWrapper();
+        System.out.println(tmpid);
+        qw.eq("template_id",tmpid);
+        List<Img> imgList= imgDAO.selectList(qw);
+        return imgList;
+    }
 }

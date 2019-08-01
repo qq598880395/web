@@ -8,6 +8,12 @@
 </head>
 <body>
 <div>
+    <h2>已上传的轮播图片</h2>
+    <table id="UploadedLunboImg" lay-filter="test"></table>
+
+</div>
+
+<div>
     <h2>轮播图片上传</h2>
     <div class="layui-upload control">
         <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
@@ -34,13 +40,60 @@
 </div>
 
 
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
 <script>
     var $,files;
 
-    layui.use(['jquery','upload','carousel','layer'], function() {
-        $ = layui.jquery,
-            layer = layui.layer,
-            upload = layui.upload;
+    layui.use(['jquery','upload','carousel','layer','table'], function() {
+        $ = layui.jquery;
+        var layer = layui.layer,
+            upload = layui.upload,
+            table = layui.table;
+
+
+        //表格查询图片
+        table.render({
+            elem: '#UploadedLunboImg'
+            ,height: 312
+            ,url: getRootPath()+'/html/searchImg' //数据接口
+            ,page: true //开启分页
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，
+            ,cols: [[ //表头
+                {field: 'img_id', title: 'ID',sort: true, fixed: 'left'}
+                ,{field: 'img_name', title: '图片名',sort: true,}
+                ,{field: 'img_href', title: '图片对应链接', sort: true,}
+                ,{field: 'img_status', title: '状态', width:80, sort: true}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+            ]]
+        });
+
+        //监听行工具事件
+        table.on('tool(UploadedLunboImg)', function(obj){
+            var data = obj.data;
+            //console.log(obj)
+            if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    obj.del();
+                    layer.close(index);
+                });
+            } else if(obj.event === 'edit'){
+                layer.prompt({
+                    formType: 2
+                    ,value: data.email
+                }, function(value, index){
+                    obj.update({
+                        email: value
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+
 
         //图片预览
         var demoListView = $('#demoList'),
