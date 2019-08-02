@@ -42,8 +42,15 @@
 
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="preview">预览</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    {{#  if(d.img_status == "yes"){ }}
+    <a class="layui-btn layui-btn-warm layui-btn-xs no" lay-event="no">轮播隐藏</a>
+    {{# }if(d.img_status == "no") { }}
+    <a class="layui-btn layui-btn-xs yes" lay-event="yes">轮播显示</a>
+    {{#  } }}
+
 </script>
 
 <script>
@@ -57,17 +64,18 @@
 
 
         //表格查询图片
-        table.render({
+        var tableIns = table.render({
             elem: '#UploadedLunboImg'
             ,height: 312
             ,url: getRootPath()+'/html/searchImg' //数据接口
             ,page: true //开启分页
             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，
+            ,limit: 5
             ,cols: [[ //表头
                 {field: 'img_id', title: 'ID',sort: true, fixed: 'left'}
-                ,{field: 'img_name', title: '图片名',sort: true,}
-                ,{field: 'img_href', title: '图片对应链接', sort: true,}
-                ,{field: 'img_status', title: '是否显示', sort: true}
+                ,{field: 'img_name', title: '图片名',}
+                ,{field: 'img_href', title: '图片对应链接', }
+                ,{field: 'img_status', title: '是否显示',}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
             ]]
         });
@@ -93,7 +101,8 @@
                 });
             } else if(obj.event === 'edit'){
                 layer.prompt({
-                    formType: 3
+                    title:"输入图片跳转链接"
+                    ,formType: 3
                     ,value: data.img_href
                 }, function(value, index){
                     obj.update({
@@ -105,11 +114,46 @@
                         url : getRootPath()+"/html/updataImg_href",
                         type : "get",
                         data : {"img_href":value,"img_id":data.img_id},
-                        datatype:"json",
-                        success : function(data) {
-                            var jsondata = JSON.parse(data);
+                        success : function() {
                         }
                     });
+                });
+            }else if(obj.event === 'yes'){
+                obj.update({
+                    img_status: "yes"
+                });
+                //后台操作
+                $.ajax({
+                    url : getRootPath()+"/html/updataImg_status",
+                    type : "get",
+                    data : {"img_status":"yes","img_id":obj.data.img_id},
+                    success : function() {
+                        tableIns.reload()
+                    }
+                });
+            }else if(obj.event === 'no'){
+                obj.update({
+                    img_status: "no"
+                });
+                //后台操作
+                $.ajax({
+                    url : getRootPath()+"/html/updataImg_status",
+                    type : "get",
+                    data : {"img_status":"no","img_id":obj.data.img_id},
+                    success : function() {
+                        tableIns.reload()
+                    }
+                });
+            }
+            else if(obj.event === 'preview'){
+                layer.open({
+                    type: 1,
+                    skin: 'layui-layer-demo', //样式类名
+                    closeBtn: 0, //不显示关闭按钮
+                    offset: '50px',
+                    anim: 2,
+                    shadeClose: true, //开启遮罩关闭
+                    content: '<img width="400px" src="'+getRootPath()+"/"+data.img_src+'" />'
                 });
             }
         });
@@ -162,11 +206,14 @@
                     });
                 },
                 done: function(res, index, upload) {
+                    tableIns.reload();
                     if (res.code == "0") { //上传成功
                         var tds =  $('#upload-' + index).children();
                         tds.eq(3).html('<span style="color: #5FB878;">上传成功</span>');
                         tds.eq(4).html(''); //清空操作
-                        return delete this.files[index]; //删除文件队列已经上传成功的文件
+                        delete this.files[index]; //删除文件队列已经上传成功的文件
+                        tableIns.reload();
+                        return
                     }
                     this.error(index, upload);
                 },

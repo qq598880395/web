@@ -62,6 +62,7 @@ public class HtmlAction {
     }
 
     //删除指定的图片
+    @ResponseBody
     @RequestMapping(value = "/delImg")
     public void delImg(String img_id,String img_src){
         imgService.delImgById(img_id);
@@ -75,13 +76,20 @@ public class HtmlAction {
     }
 
     //更新图片对应的链接
+    @ResponseBody
     @RequestMapping(value = "/updataImg_href")
     public void updataImg_href(String img_href,String img_id){
         imgService.updataImg_href(img_href,img_id);
-        System.out.println(img_href);
         System.out.println(img_id);
     }
 
+    //更新图片状态
+    @ResponseBody
+    @RequestMapping(value = "/updataImg_status")
+    public void updataImg_status(String img_status,String img_id){
+        imgService.updataImg_status(img_status,img_id);
+        System.out.println(img_id);
+    }
 
 
 

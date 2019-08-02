@@ -44,17 +44,30 @@ public class ImgService {
         return imgList;
     }
 
+    //根据id删除图片
     public void delImgById(String img_id) {
         QueryWrapper qw =new QueryWrapper();
         qw.eq("img_id",img_id);
         imgDAO.delete(qw);
     }
 
+    //根据id更新链接
     public void updataImg_href(String img_href, String img_id) {
         UpdateWrapper uw = new UpdateWrapper();
         Img img = new Img();
-        uw.set("img_id",img_id);
+        uw.eq("img_id",img_id);
         img.setImg_href(img_href);
         imgDAO.update(img,uw);
     }
+
+    //根据id修改图片状态
+    public void updataImg_status(String img_status, String img_id) {
+        UpdateWrapper uw = new UpdateWrapper();
+        Img img = new Img();
+        uw.eq("img_id",img_id);
+        img.setImg_status(img_status);
+        imgDAO.update(img,uw);
+    }
+
+
 }
