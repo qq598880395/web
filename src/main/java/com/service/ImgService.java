@@ -2,6 +2,8 @@ package com.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dao.ImgDAO;
 import com.pojo.Img;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +39,11 @@ public class ImgService {
     }
 
     //查询轮播所有图片
-    public List<Img> searchImgById(Integer tmpid) {
+    public IPage searchImgById(Integer tmpid, int page,int limit) {
         QueryWrapper qw =new QueryWrapper();
         qw.eq("template_id",tmpid);
-        List<Img> imgList= imgDAO.selectList(qw);
+        Page p = new Page(page,limit);
+        IPage<Img> imgList= imgDAO.selectPage(p,qw);
         return imgList;
     }
 

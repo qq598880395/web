@@ -2,12 +2,14 @@ package com.action;
 
 import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSONArray;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.generator.config.IFileCreate;
 import com.pojo.Img;
 import com.pojo.Page;
 import com.service.ImgService;
 import com.service.PageService;
 import com.sun.org.apache.xml.internal.security.utils.XalanXPathAPI;
+import net.sf.jsqlparser.statement.select.Limit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,13 +53,14 @@ public class HtmlAction {
     //查询当前微官网模块图片
     @ResponseBody
     @RequestMapping(value = "/searchImg")
-    public JSONObject SerachImg(){
+    public JSONObject SerachImg(int page,int limit){
         JSONObject jsonObject = new JSONObject();
-        List<Img> imglist=imgService.searchImgById(1);
+        IPage<Img> imglist = imgService.searchImgById(1,page,limit);
+
             jsonObject.put("code",0);
             jsonObject.put("msg","");
-            jsonObject.put("count",imglist.size());
-            jsonObject.put("data",imglist);
+            jsonObject.put("count",imglist.getTotal());
+            jsonObject.put("data",imglist.getRecords());
         return jsonObject;
     }
 
