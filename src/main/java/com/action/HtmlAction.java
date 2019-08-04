@@ -1,24 +1,19 @@
 package com.action;
 
+import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
-import com.alibaba.fastjson.JSONArray;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.generator.config.IFileCreate;
 import com.pojo.Img;
 import com.pojo.Page;
 import com.service.ImgService;
 import com.service.PageService;
-import com.sun.org.apache.xml.internal.security.utils.XalanXPathAPI;
-import net.sf.jsqlparser.statement.select.Limit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.json.JsonArray;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -45,9 +40,15 @@ public class HtmlAction {
     //查询当前微官网模块图片
     @ResponseBody
     @RequestMapping(value = "/searchNowImg")
-    public List<Img> SerachNowImg(Integer tmpid){
-        List<Img> imglist=imgService.searchImgById(tmpid,"yes");
-        return imglist;
+    public String SerachNowImg(Integer template_id){
+        List<Img> imglist=imgService.searchImgById(template_id,"yes");
+        JSONArray jsonArray = new JSONArray();
+        for (Img img:imglist) {
+            jsonArray.add(img.getImg_src());
+        }
+        System.out.println();
+
+        return jsonArray.toString();
     }
 
     //查询当前微官网模块图片

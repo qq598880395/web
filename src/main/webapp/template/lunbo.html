@@ -1,44 +1,19 @@
 
     <div class="layui-carousel" id="test1">
       <div carousel-item class="carousel-item">
-				<div class="carousel-img carousel-img0 nothave"></div>
-				<div class="carousel-img carousel-img1 nothave"></div>
-				<div class="carousel-img carousel-img2 nothave"></div>
+
       </div>
     </div>
-		<div class="layui-upload control">
-			<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="testList">选择多文件</button>
-				<!-- 添加条目-->
-			<button id="addEntry" class="layui-btn layui-btn-sm">添加条目</button>
-			<!-- 删除条目-->
-			<button id="deleteEntry" class="layui-btn layui-btn-danger layui-btn-sm">删除条目</button>
-			<!-- 条目中可以是任意内容，如：<img src=""> -->
-			
-			<div class="layui-upload-list">
-				<table class="layui-table">
-					<thead>
-						<tr>
-							<th>轮播跳转链接</th>
-							<th>大小</th>
-							<th>状态</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody id="demoList"></tbody>
-				</table>
-			</div>
-			<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="testListAction">开始上传</button>
-		</div>
+
 
      
     <script>
-			var ins,$,files;
+			var ins,$;
 		
 		layui.use(['jquery','upload','carousel','layer'], function() {
 			$ = layui.jquery,
-				layer = layui.layer,
-				upload = layui.upload;
-				
+				layer = layui.layer;
+
 				 var carousel = layui.carousel;
 				//建造实例
 				ins = carousel.render({
@@ -51,119 +26,51 @@
 					,height: '200px'
 				});
 				
-				//jquery内容 添加条目
-				$("#addEntry").click(function(){
-					var entry = document.createElement("div");
-					var num = $(".carousel-item .carousel-img").length;
-					entry.className = "carousel-img carousel-img"+num+" nothave";
-					$(".carousel-item").append(entry);
-					ins.reload();	//重置轮播		
+				$(document).ready(function () {
+					searchLunboImg();
 				})
-				//删除条目
-				$("#deleteEntry").click(function(){
-					var num = $(".carousel-item div").length;
-					if(num!==null&& num>2){
-						$(".carousel-item").children().last().remove();
-						ins.reload();	//重置轮播	
-						index = $("#demoList").children().length-1;
-						delete files[index];
-						$("#demoList").children().last().remove();
-					}else{
-						layer.tips('轮播条目至少两条','#deleteEntry');
-					}
-				})
-				
-				//图片预览
-					var demoListView = $('#demoList'),
-					uploadListIns = upload.render({
-						elem: '#testList',
-						url: getRootPath()+'/upload/uploadImage',
-						multiple: true,
-						auto: false,
-						bindAction: '#testListAction',
-						accept: 'images',
-						choose: function(obj) {
-							var failNum = 0;
-							//files改为全局变量
-							files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
-							var num = 0;
-							//读取本地文件
-							obj.preview(function(index, file, result) {
-								var tr = $(['<tr id="upload-' + index + '">',
-									'<td><input type="text" ></td>', '<td>' + (file.size / 1014).toFixed(
-										1) + 'kb</td>', '<td>等待上传</td>', '<td>',
-									'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>', '</td>', '</tr>'
-								].join(''));
-								
-								//删除
-								tr.find('.demo-delete').on('click', function() {
-									delete files[index]; //删除对应的文件
-									tr.remove();
-									lunbo.parent().attr('class','carousel-img carousel-img'+lunbo.parent().index()+' nothave')
-									lunbo.remove();
-									uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
-									num--;
-								});
-
-                                //单个重传
-                                tr.find('.demo-reload').on('click', function(){
-                                    obj.upload(index, file);
-                                });
-								
-								
-								if($('.nothave').length >0){
-								demoListView.append(tr);
-
-								var ifhave = $('.nothave').first();
-								var lunbo =$('<img src="' + result + '" alt="' + file.name +
-									'" class="carousel-img-up" width="100%" >');
-
-								ifhave.append(lunbo);
-								ifhave.attr('class','carousel-img carousel-img'+num+' have');
-								num++;
-								}else{
-									failNum++;
-									layer.tips(failNum+'张添加失败,图片超出条目数量!','#testList');
-									delete files[index];
-								}
-							});
-						},
-						before: function(obj) {
-							obj.preview(function(index, file, result) {
-							});
-						},
-						done: function(res, index, upload) {
-                            if (res.code == "0") { //上传成功
-                                var tds =  $('#upload-' + index).children();
-                                tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
-                                tds.eq(3).html(''); //清空操作
-                                return delete this.files[index]; //删除文件队列已经上传成功的文件
-                            }
-                            this.error(index, upload);
-						},
-                        error: function(index, upload) {
-						    //上传出错
-                            var tr = demoListView.find('tr#upload-' + index),
-                                tds = tr.children();
-                            tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
-                            tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
-                        }
-					});
-				
 		});
-			var getRootPath = function() {
-				// http://localhost:8083/uimcardprj/share/meun.jsp
-				var curWwwPath = window.document.location.href;
-				// uimcardprj/share/meun.jsp
-				var pathName = window.document.location.pathname;
-				var pos = curWwwPath.indexOf(pathName);
-				// http://localhost:8083
-				var localhostPaht = curWwwPath.substring(0, pos);
-				// uimcardprj
-				var projectName = pathName
-						.substring(0, pathName.substr(1).indexOf('/') + 1);
-				if (projectName == "/weixin" || projectName == "/admin"  || projectName == "/pc")
-					projectName = "";
-				return(localhostPaht + projectName);
-			}
+
+		var searchLunboImg = function () {
+			$.ajax({
+				url : getRootPath()+"/html/searchNowImg",
+				type : "get",
+				data : {"template_id":1},
+				datatype:"json",
+				success : function(data) {
+					var jsondata = JSON.parse(data);
+					if($('.nothave').length >0){
+
+					}
+					for (var i=0;i<jsondata.length;i++) {
+
+						var entry = document.createElement("div");
+						entry.className = "carousel-img carousel-img"+i;
+						var img = document.createElement("img");
+						img.src = getRootPath()+"/"+jsondata[i];
+						img.className = "carousel-img-up"
+						img.style.width = "100%";
+						entry.appendChild(img);
+						$(".carousel-item").append(entry);
+						ins.reload();	//重置轮播
+					}
+				}
+			});
+		}
+
+		var getRootPath = function() {
+			// http://localhost:8083/uimcardprj/share/meun.jsp
+			var curWwwPath = window.document.location.href;
+			// uimcardprj/share/meun.jsp
+			var pathName = window.document.location.pathname;
+			var pos = curWwwPath.indexOf(pathName);
+			// http://localhost:8083
+			var localhostPaht = curWwwPath.substring(0, pos);
+			// uimcardprj
+			var projectName = pathName
+					.substring(0, pathName.substr(1).indexOf('/') + 1);
+			if (projectName == "/weixin" || projectName == "/admin"  || projectName == "/pc")
+				projectName = "";
+			return(localhostPaht + projectName);
+		}
 	</script>

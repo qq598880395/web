@@ -42,6 +42,7 @@ public class ImgService {
     public IPage searchImgById(Integer tmpid, int page,int limit) {
         QueryWrapper qw =new QueryWrapper();
         qw.eq("template_id",tmpid);
+        qw.orderByDesc("img_status");
         Page p = new Page(page,limit);
         IPage<Img> imgList= imgDAO.selectPage(p,qw);
         return imgList;
