@@ -44,10 +44,11 @@ public class HtmlAction {
         List<Img> imglist=imgService.searchImgById(template_id,"yes");
         JSONArray jsonArray = new JSONArray();
         for (Img img:imglist) {
-            jsonArray.add(img.getImg_src());
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("img_src",img.getImg_src());
+            jsonObject.put("img_href",img.getImg_href());
+            jsonArray.add(jsonObject);
         }
-        System.out.println();
-
         return jsonArray.toString();
     }
 

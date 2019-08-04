@@ -14,6 +14,7 @@
 			$ = layui.jquery,
 				layer = layui.layer;
 
+			//轮播初始化
 				 var carousel = layui.carousel;
 				//建造实例
 				ins = carousel.render({
@@ -31,6 +32,7 @@
 				})
 		});
 
+		//查询轮播图片及超链接并显示
 		var searchLunboImg = function () {
 			$.ajax({
 				url : getRootPath()+"/html/searchNowImg",
@@ -43,14 +45,16 @@
 
 					}
 					for (var i=0;i<jsondata.length;i++) {
-
 						var entry = document.createElement("div");
 						entry.className = "carousel-img carousel-img"+i;
+						var a = document.createElement("a");
+						a.href = jsondata[i].img_href;
 						var img = document.createElement("img");
-						img.src = getRootPath()+"/"+jsondata[i];
+						img.src = getRootPath()+"/"+jsondata[i].img_src;
 						img.className = "carousel-img-up"
 						img.style.width = "100%";
-						entry.appendChild(img);
+						a.appendChild(img);
+						entry.appendChild(a);
 						$(".carousel-item").append(entry);
 						ins.reload();	//重置轮播
 					}

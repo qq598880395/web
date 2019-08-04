@@ -109,7 +109,7 @@
                 });
             } else if(obj.event === 'edit'){
                 layer.prompt({
-                    title:"输入图片跳转链接"
+                    title:"输入跳转链接,外网链接以 https:// 开头"
                     ,formType: 3
                     ,value: data.img_href
                 }, function(value, index){
@@ -193,7 +193,7 @@
                     obj.preview(function(index, file, result) {
                         $('#demo2').append('<img id="'+index+'" src="'+ result +'" alt="'+ file.name +'" style="height: 150px;" class="layui-upload-img">');
                         var tr = $(['<tr id="upload-' + index + '">', '<td>'+file.name+'</td>',
-                            '<td><input id="t-'+index+'" name="img_href" type="text" ></td>', '<td>' + (file.size / 1014).toFixed(
+                            '<td><input id="t-'+index+'" name="img_href" type="text" style="height:25px" class="layui-input" placeholder="外网链接请以 https:// 开头" ></td>', '<td>' + (file.size / 1014).toFixed(
                                 1) + 'kb</td>', '<td>等待上传</td>', '<td>',
                             '<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>', '</td>', '</tr>'
                         ].join(''));
