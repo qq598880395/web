@@ -2,7 +2,6 @@ package com.action;
 
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.pojo.Img;
 import com.pojo.Page;
@@ -52,7 +51,7 @@ public class HtmlAction {
         return jsonArray.toString();
     }
 
-    //查询当前微官网模块图片
+    //查询微官网模块所有图片
     @ResponseBody
     @RequestMapping(value = "/searchImg")
     public JSONObject SerachImg(int page,int limit){
@@ -71,13 +70,7 @@ public class HtmlAction {
     @RequestMapping(value = "/delImg")
     public void delImg(String img_id,String img_src){
         imgService.delImgById(img_id);
-        System.out.println(img_src);
-        File file  = new File(System.getProperty("ROOT")+img_src);
-        System.out.println(System.getProperty("ROOT")+img_src);
-        if (file.exists()==true){
-            file.delete();
-            System.out.println("文件是否存在："+file.exists());//判断文件是否删除成功
-        }
+        DelFile(img_src);
     }
 
     //更新图片对应的链接
@@ -96,6 +89,35 @@ public class HtmlAction {
         System.out.println(img_id);
     }
 
+    //查询历史所有模板
+    @ResponseBody
+    @RequestMapping(value = "/searchHistoryHtml")
+    public JSONObject SerachHistoryHtml(int page,int limit) {
+        JSONObject jsonObject = new JSONObject();
+        IPage<Page> pagelist = pageService.searchHistoryHtml(page, limit);
 
+        jsonObject.put("code", 0);
+        jsonObject.put("msg", "查询成功");
+        jsonObject.put("count", pagelist.getTotal());
+        jsonObject.put("data", pagelist.getRecords());
+        return jsonObject;
+    }
+
+    //删除指定的页面
+    @ResponseBody
+    @RequestMapping(value = "/delHtml")
+    public void delHtml(String page_id,String page_src){
+        pageService.delPageById(page_id);
+        DelFile(page_src);
+    }
+
+    //删除服务器里的文件
+    private void DelFile(String src) {
+        File file  = new File(System.getProperty("ROOT")+ src);
+        if (file.exists()==true){
+            file.delete();
+            System.out.println("文件是否存在："+file.exists());//判断文件是否删除成功
+        }
+    }
 
 }

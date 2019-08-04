@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,11 +103,15 @@ public class UpLoadAction {
             osw.close();
             System.out.println("输入完成");
 
+            //获取当前系统时间
+            Date date = new Date();
+            Timestamp now = new Timestamp(date.getTime());
             //页面信息存入数据库
             PageVO vo = new PageVO();
             vo.setPage_name(pageName);
             vo.setPage_src("/page/"+pageName+".html");
             vo.setPage_status("no");
+            vo.setCreate_time(now);
             pageService.addPage(vo);
             pageService.updataPage(pageName);
 

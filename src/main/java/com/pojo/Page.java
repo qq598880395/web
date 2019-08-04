@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+
 @TableName("page")
 public class Page implements Serializable {
     @TableId(type= IdType.AUTO)
@@ -15,6 +17,15 @@ public class Page implements Serializable {
     private String page_name;
     private String page_src;
     private String page_status;
+    private Timestamp create_time;
+
+    public Timestamp getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(Timestamp create_time) {
+        this.create_time = create_time;
+    }
 
     public Integer getPage_id() {
         return page_id;

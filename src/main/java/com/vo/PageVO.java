@@ -1,10 +1,21 @@
 package com.vo;
 
+import java.sql.Timestamp;
+
 public class PageVO {
     private Integer page_id;
     private String page_name;
     private String page_src;
     private String page_status;
+    private Timestamp create_time;
+
+    public Timestamp getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(Timestamp create_time) {
+        this.create_time = create_time;
+    }
 
     public Integer getPage_id() {
         return page_id;

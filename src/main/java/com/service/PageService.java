@@ -2,6 +2,7 @@ package com.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.dao.PageDAO;
 import com.pojo.Page;
 import com.vo.PageVO;
@@ -45,4 +46,17 @@ public class PageService {
         return n;
     }
 
+    public IPage<Page> searchHistoryHtml(int page, int limit) {
+        QueryWrapper qw =new QueryWrapper();
+        qw.orderByDesc("page_status");
+        com.baomidou.mybatisplus.extension.plugins.pagination.Page p = new com.baomidou.mybatisplus.extension.plugins.pagination.Page(page,limit);
+        IPage<Page> pageList= pageDAO.selectPage(p,qw);
+        return pageList;
+    }
+
+    public void delPageById(String page_id) {
+        QueryWrapper qw =new QueryWrapper();
+        qw.eq("page_id",page_id);
+        pageDAO.delete(qw);
+    }
 }

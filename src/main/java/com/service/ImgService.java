@@ -73,5 +73,4 @@ public class ImgService {
         imgDAO.update(img,uw);
     }
 
-
 }
