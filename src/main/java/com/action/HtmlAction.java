@@ -57,7 +57,6 @@ public class HtmlAction {
     public JSONObject SerachImg(int page,int limit){
         JSONObject jsonObject = new JSONObject();
         IPage<Img> imglist = imgService.searchImgById(1,page,limit);
-
             jsonObject.put("code",0);
             jsonObject.put("msg","");
             jsonObject.put("count",imglist.getTotal());

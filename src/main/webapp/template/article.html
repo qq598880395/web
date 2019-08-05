@@ -1,7 +1,88 @@
-<div class="layui-card">
-  <div class="layui-card-header">酒店介绍</div>
-  <div class="layui-card-body">
-    卡片式面板面板通常用于非白色背景色的主体内<br>
-    从而映衬出边框投影
-  </div>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-header">酒店介绍</div>
+        <div class="layui-card-body">
+            <div class="layui-fluid">
+                <div class="layui-row article-row layui-col-space10">
+                    <div class="layui-col-xs4">
+                        <div>
+                            <img src="img/9788985df6292e6297af223b28dbd0b61525f5a1.jpg" class="article-img">
+                        </div>
+                    </div>
+                    <div class="layui-col-xs8 ">
+                        <div class="article-text"><p>雷锋把实现崇高的理想落实到本职岗位上，说到做到，表里如一。他坚持理想与现实相一致，决心为共产主义奋斗终身，甘愿做一颗永不生锈的“螺丝钉”，干一行，爱一行，钻一行；他注意理论联系实际，对自己政治上要求严格，自觉经受思想锻炼，在艰苦卓绝的战斗中提升自己，逐步成长为一名具有高度共产主义觉悟和道德修养的战士。</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card ">
+            <div class="layui-card-header">酒店介绍</div>
+            <div class="layui-card-body">
+                <div class="layui-fluid">
+                    <div class="layui-row article-row layui-col-space10">
+                        <div class="layui-col-xs4">
+                            <div>
+                                <img src="img/9788985df6292e6297af223b28dbd0b61525f5a1.jpg" class="article-img">
+                            </div>
+                        </div>
+                        <div class="layui-col-xs8 ">
+                            <div class="article-text"><p>雷锋把实现崇高的理想落实到本职岗位上，说到做到，表里如一。他坚持理想与现实相一致，决心为共产主义奋斗终身，甘愿做一颗永不生锈的“螺丝钉”，干一行，爱一行，钻一行；他注意理论联系实际，对自己政治上要求严格，自觉经受思想锻炼，在艰苦卓绝的战斗中提升自己，逐步成长为一名具有高度共产主义觉悟和道德修养的战士。</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+    <script>
+        var getRootPath = function() {
+            // http://localhost:8083/uimcardprj/share/meun.jsp
+            var curWwwPath = window.document.location.href;
+            // uimcardprj/share/meun.jsp
+            var pathName = window.document.location.pathname;
+            var pos = curWwwPath.indexOf(pathName);
+            // http://localhost:8083
+            var localhostPaht = curWwwPath.substring(0, pos);
+            // uimcardprj
+            var projectName = pathName
+                .substring(0, pathName.substr(1).indexOf('/') + 1);
+            if (projectName == "/weixin" || projectName == "/admin"  || projectName == "/pc")
+                projectName = "";
+            return(localhostPaht + projectName);
+        }
+
+        var JQuery;
+        layui.use(['element','jquery','layer'], function() {
+             var element = layui.element,
+             $ = layui.jquery,
+             JQuery=$;
+             layer=layui.layer;
+             //xxx();
+
+
+        });
+            //超出部分省略
+            $(".article-text").each(function() {
+            var str = $(this).text();
+            var subStr = str.substring(0, 60);
+            $(this).html(subStr + (str.length > 10 ? '...' + "<a href='#' class='active'>查看更多</a>" : ''));
+        });
+            //取得简介图片
+            $.ajax({
+                url: getRootPath()+'/html/searchNowImg',
+                data:{template_id:1},
+                type: "get",
+                datatype:"json",
+                success:function (data) {
+                    var jsonobj =JSON.parse(data);
+                    var i=0;
+                    $('.article-img').each(function () {
+                        $(this).attr("src",getRootPath()+'/'+jsonobj[i].img_src);
+                        i++;
+                    });
+        }
+        })
+
+
+    </script>
