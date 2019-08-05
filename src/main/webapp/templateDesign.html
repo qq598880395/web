@@ -9,7 +9,6 @@
 <div style="width: 500px;height:844px;float: left;">
     <iframe id="design" name="design" style="width: 500px;height: 844px;padding: 50px;"
             frameborder="0" src="page/index2.html">
-
     </iframe>
 </div>
 
@@ -24,7 +23,6 @@
         <img src="img/Sketch004.png" width="411px;" style="position:absolute;" />
         <iframe id="preview" name="preview" style="width: 363px;height: 730px;position: absolute;left:22px;top: 70px;border-bottom-left-radius: 35px;border-bottom-right-radius: 35px;border-bottom:solid 10px #000000;"
                 frameborder="0" src="page/index2.html">
-
         </iframe>
     </div>
 </div>
@@ -114,11 +112,13 @@
             type : "post",
             datatype:"json",
             success : function(data) {
+                console.log(data);
                 var jsondata = JSON.parse(data);
                 $("#preview").attr("src",getRootPath()+jsondata.page_src)
             }
         });
     }
+
 
     var getRootPath = function() {
         // http://localhost:8083/uimcardprj/share/meun.jsp
