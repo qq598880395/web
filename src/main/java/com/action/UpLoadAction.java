@@ -36,11 +36,14 @@ public class UpLoadAction {
     @RequestMapping("/uploadImage")
     @ResponseBody
     public JSONObject uploadImage(@RequestParam("file") MultipartFile file, String params) {
-        String href = null;
+        String href = "#";
         List<ImgHrefVo> testDemos = JSON.parseArray(params, ImgHrefVo.class);
         for (int i = 0; i < testDemos.size(); i++) {
             if(testDemos.get(i).getFilename().equals(file.getOriginalFilename())){
-              href = testDemos.get(i).getImg_href();
+                //判断herf参数是否为空
+                if (testDemos.get(i).getImg_href()!=null&&testDemos.get(i).getImg_href().length()>0){
+                    href = testDemos.get(i).getImg_href();
+                }
                 break;
             }
         }
@@ -116,6 +119,7 @@ public class UpLoadAction {
             }else {
                 //查询原文件路径并删除
                 String src = pageService.selectPage_src(page_name);
+                System.out.println("滚出来"+src);
                 HtmlAction.DelFile(src);
                 //覆盖原有的
                 pageService.coverPage(vo,page_name);

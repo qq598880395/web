@@ -136,7 +136,9 @@
                     type : "get",
                     data : {"img_status":"yes","img_id":obj.data.img_id},
                     success : function() {
-                        tableIns.reload()
+                        tableIns.reload({
+                        }
+                        )
                     }
                 });
             }else if(obj.event === 'no'){

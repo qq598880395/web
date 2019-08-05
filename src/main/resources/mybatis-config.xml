@@ -4,7 +4,10 @@
 <configuration>
 
 	<!-- 配置Mybatis的相关配置 -->
-    
+    <settings>
+		<!-- 打印sql语句 -->
+		<setting name="logImpl" value="STDOUT_LOGGING"/>
+	</settings>
 	
 
 

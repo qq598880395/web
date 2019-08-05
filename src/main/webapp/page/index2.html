@@ -93,7 +93,7 @@
 				
 				//添加轮播
 				$("#addlunbo").click(function() {
-
+					alert(getRootPath())
 					$(".lunbo").load(getRootPath()+"/template/lunbo.html");
 					$("#addlunbo").hide();
 					$("#deletelunbo").show();
@@ -123,7 +123,6 @@
 								$(templateDiv).append(button);
 								$(templateDiv).append(hr);
 								$('#new-div').append(templateDiv);
-								
 							});
 						},
 						btn2: function(index, layero) {

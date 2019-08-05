@@ -18,7 +18,7 @@
         <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
         {{#  if(d.page_status == "yes"){ }}
-        <a class="layui-btn layui-btn-warm layui-btn-xs no" lay-event="no">已显示</a>
+        <a class="layui-btn layui-btn-warm layui-btn-xs no ">已显示</a>
         {{# }if(d.page_status == "no") { }}
         <a class="layui-btn layui-btn-xs yes" lay-event="yes">显示</a>
         {{#  } }}
@@ -100,29 +100,16 @@
                         });
                     });
                 } else if (obj.event === 'yes') {
-                    obj.update({
-                        img_status: "yes"
-                    });
                     //后台操作
+                    //更新页面状态为yes其他为no
                     $.ajax({
-                        url: getRootPath() + "/html/updataImg_status",
+                        url: getRootPath() + "/html/updataPage_status",
                         type: "get",
-                        data: {"img_status": "yes", "img_id": obj.data.img_id},
+                        data: {"page_id": obj.data.page_id},
                         success: function () {
-                            tableIns.reload()
-                        }
-                    });
-                } else if (obj.event === 'no') {
-                    obj.update({
-                        img_status: "no"
-                    });
-                    //后台操作
-                    $.ajax({
-                        url: getRootPath() + "/html/updataImg_status",
-                        type: "get",
-                        data: {"img_status": "no", "img_id": obj.data.img_id},
-                        success: function () {
-                            tableIns.reload()
+                            tableIns.reload({
+
+                            })
                         }
                     });
                 } else if (obj.event === 'preview') {

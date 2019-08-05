@@ -77,8 +77,10 @@ public class HtmlAction {
     @ResponseBody
     @RequestMapping(value = "/updataImg_href")
     public void updataImg_href(String img_href,String img_id){
+        if (img_href==null||img_href.trim().length()== 0){
+            img_href = "#";
+        }
         imgService.updataImg_href(img_href,img_id);
-        System.out.println(img_id);
     }
 
     //更新图片状态
@@ -86,7 +88,6 @@ public class HtmlAction {
     @RequestMapping(value = "/updataImg_status")
     public void updataImg_status(String img_status,String img_id){
         imgService.updataImg_status(img_status,img_id);
-        System.out.println(img_id);
     }
 
     //查询历史所有模板
@@ -118,6 +119,13 @@ public class HtmlAction {
             file.delete();
             System.out.println("文件是否存在："+file.exists());//判断文件是否删除成功
         }
+    }
+
+    //更新页面状态
+    @ResponseBody
+    @RequestMapping(value = "/updataPage_status")
+    public void updataPage_status(String page_id){
+        pageService.updataPage_status(page_id);
     }
 
 }

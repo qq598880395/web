@@ -49,7 +49,7 @@ public class PageService {
     //查询历史模板
     public IPage<Page> searchHistoryHtml(int page, int limit) {
         QueryWrapper qw =new QueryWrapper();
-        qw.orderByDesc("page_status");
+        qw.orderByDesc("create_time");
         com.baomidou.mybatisplus.extension.plugins.pagination.Page p = new com.baomidou.mybatisplus.extension.plugins.pagination.Page(page,limit);
         IPage<Page> pageList= pageDAO.selectPage(p,qw);
         return pageList;
@@ -75,10 +75,7 @@ public class PageService {
 
     //根据页面名查询路径
     public String selectPage_src(String page_name) {
-        QueryWrapper qw = new QueryWrapper();
-        qw.eq("page_name",page_name);
-        Page page = pageDAO.selectOne(qw);
-        String src = page.getPage_src();
+        String src = pageDAO.getSrc(page_name);
         return src;
     }
 
@@ -89,5 +86,18 @@ public class PageService {
         UpdateWrapper uw = new UpdateWrapper();
         uw.eq("page_name",page_name);
         pageDAO.update(po,uw);
+    }
+
+    public void updataPage_status(String page_id) {
+        UpdateWrapper updateWrapper = new UpdateWrapper();
+        UpdateWrapper updateWrapper2 = new UpdateWrapper();
+        updateWrapper.eq("page_status","yes");
+        Page page = new Page();
+        page.setPage_status("no");
+        pageDAO.update(page,updateWrapper);
+        System.out.println(page_id);
+        updateWrapper2.eq("page_id",page_id);
+        page.setPage_status("yes");
+        pageDAO.update(page,updateWrapper2);
     }
 }
