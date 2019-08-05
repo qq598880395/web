@@ -89,10 +89,8 @@ public class UpLoadAction {
     //上传页面
         @ResponseBody
         @RequestMapping(value="/createHTML")
-        public String createHTML(String htmltext,String page_name) throws IOException {
+        public String createHTML(String htmltext,String page_name,String itexist) throws IOException {
             htmltext = "<!DOCTYPE html>\n" +"<html>"+htmltext+"</html>";
-            System.out.println(htmltext);
-
             String pageName = System.currentTimeMillis()+"";
             File file = new File(pageurl+"/"+pageName+".html");
             // 创建一个新文件
@@ -102,7 +100,6 @@ public class UpLoadAction {
             // 关闭输出流
             osw.close();
             System.out.println("输入完成");
-
             //获取当前系统时间
             Date date = new Date();
             Timestamp now = new Timestamp(date.getTime());
@@ -112,15 +109,33 @@ public class UpLoadAction {
             vo.setPage_src("/page/"+pageName+".html");
             vo.setPage_status("no");
             vo.setCreate_time(now.toString());
-            pageService.addPage(vo);
-            pageService.updataPage(page_name);
+            if (itexist.equals("false")){
+                //新增
+                pageService.addPage(vo);
 
+            }else {
+                //查询原文件路径并删除
+                String src = pageService.selectPage_src(page_name);
+                HtmlAction.DelFile(src);
+                //覆盖原有的
+                pageService.coverPage(vo,page_name);
+            }
+            pageService.updataPage(page_name);
             com.alibaba.fastjson.JSONObject json =new com.alibaba.fastjson.JSONObject();
             json.put("code",200);
             json.put("msg","success");
             json.put("url","/page/"+pageName+".html");
             return json.toString();
+
         }
+
+    //根据字段判断是否存在
+    @ResponseBody
+    @RequestMapping(value="/itExist")
+    public String itExist(String value,String column){
+        String result = pageService.pageitExist(value,column);
+    return result;
+    }
 
 
 

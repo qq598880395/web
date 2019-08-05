@@ -112,7 +112,7 @@ public class HtmlAction {
     }
 
     //删除服务器里的文件
-    private void DelFile(String src) {
+    public static void DelFile(String src) {
         File file  = new File(System.getProperty("ROOT")+ src);
         if (file.exists()==true){
             file.delete();

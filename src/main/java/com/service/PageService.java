@@ -46,6 +46,7 @@ public class PageService {
         return n;
     }
 
+    //查询历史模板
     public IPage<Page> searchHistoryHtml(int page, int limit) {
         QueryWrapper qw =new QueryWrapper();
         qw.orderByDesc("page_status");
@@ -54,9 +55,39 @@ public class PageService {
         return pageList;
     }
 
+    //根据Id删除页面
     public void delPageById(String page_id) {
         QueryWrapper qw =new QueryWrapper();
         qw.eq("page_id",page_id);
         pageDAO.delete(qw);
+    }
+
+    //判断页面是否存在
+    public String pageitExist(String value, String column) {
+        QueryWrapper qw = new QueryWrapper();
+        qw.eq(column,value);
+        int n = pageDAO.selectCount(qw);
+        if (n>=1){
+            return "true";
+        }
+        return "false";
+    }
+
+    //根据页面名查询路径
+    public String selectPage_src(String page_name) {
+        QueryWrapper qw = new QueryWrapper();
+        qw.eq("page_name",page_name);
+        Page page = pageDAO.selectOne(qw);
+        String src = page.getPage_src();
+        return src;
+    }
+
+    //更新覆盖原有页面
+    public void coverPage(PageVO vo, String page_name) {
+        Page po = new Page();
+        BeanUtils.copyProperties(vo,po);
+        UpdateWrapper uw = new UpdateWrapper();
+        uw.eq("page_name",page_name);
+        pageDAO.update(po,uw);
     }
 }
