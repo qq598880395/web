@@ -44,26 +44,34 @@
 
 
         $("#submitHTML").click(function() {
-            var obj = document.getElementById("design").contentWindow;
-            var ifmObj = obj.document.getElementById("html").innerHTML;
-            document.getElementById("viewht").innerHTML = ifmObj;
-            $(".control").remove();
-            $(".carousel-img").remove();
-            var htmltext = $("#viewht").html();
-            $.ajax({
-                url : getRootPath()+"/upload/createHTML",
-                type : "post",
-                data : {"htmltext":htmltext},
-                datatype:"json",
-                success : function(data) {
-                    var jsondata = JSON.parse(data);
-                    var indexPageUrl = getRootPath()+jsondata.url;
-                    $("#preview").attr("src",indexPageUrl);
+            layer.prompt({
+                title:"请输入模板名称"
+                ,formType: 3
+            }, function(value, index){
+                layer.close(index);
+                var obj = document.getElementById("design").contentWindow;
+                var ifmObj = obj.document.getElementById("html").innerHTML;
+                document.getElementById("viewht").innerHTML = ifmObj;
+                $(".control").remove();
+                $(".carousel-img").remove();
+                var htmltext = $("#viewht").html();
+                $.ajax({
+                    url : getRootPath()+"/upload/createHTML",
+                    type : "post",
+                    data : {"htmltext":htmltext,"page_name":value},
+                    datatype:"json",
+                    success : function(data) {
+                        var jsondata = JSON.parse(data);
+                        var indexPageUrl = getRootPath()+jsondata.url;
+                        $("#preview").attr("src",indexPageUrl);
 
-                    alert(jsondata.url);
-                    alert(jsondata.msg);
-                }
+                        alert(jsondata.url);
+                        alert(jsondata.msg);
+                    }
+                });
             });
+
+
         })
 
     });

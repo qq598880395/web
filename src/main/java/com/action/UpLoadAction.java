@@ -89,7 +89,7 @@ public class UpLoadAction {
     //上传页面
         @ResponseBody
         @RequestMapping(value="/createHTML")
-        public String createHTML(String htmltext) throws IOException {
+        public String createHTML(String htmltext,String page_name) throws IOException {
             htmltext = "<!DOCTYPE html>\n" +"<html>"+htmltext+"</html>";
             System.out.println(htmltext);
 
@@ -108,12 +108,12 @@ public class UpLoadAction {
             Timestamp now = new Timestamp(date.getTime());
             //页面信息存入数据库
             PageVO vo = new PageVO();
-            vo.setPage_name(pageName);
+            vo.setPage_name(page_name);
             vo.setPage_src("/page/"+pageName+".html");
             vo.setPage_status("no");
-            vo.setCreate_time(now);
+            vo.setCreate_time(now.toString());
             pageService.addPage(vo);
-            pageService.updataPage(pageName);
+            pageService.updataPage(page_name);
 
             com.alibaba.fastjson.JSONObject json =new com.alibaba.fastjson.JSONObject();
             json.put("code",200);

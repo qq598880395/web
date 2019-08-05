@@ -17,13 +17,13 @@ public class Page implements Serializable {
     private String page_name;
     private String page_src;
     private String page_status;
-    private Timestamp create_time;
+    private String create_time;
 
-    public Timestamp getCreate_time() {
+    public String getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(Timestamp create_time) {
+    public void setCreate_time(String create_time) {
         this.create_time = create_time;
     }
 
