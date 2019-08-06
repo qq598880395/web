@@ -31,6 +31,8 @@
 
 <script>
     var $;
+    var design_src = null;
+    var design_name = null;
     layui.use(['jquery', 'layer'], function() {
         $ = layui.jquery;
         var layer = layui.layer;
@@ -38,6 +40,16 @@
         //后面就跟你平时使用jQuery一样
         $(document).ready(function () {
             searchNowHtml();
+            design_src = ReadCookie("design_src");
+
+            if (design_src!=null&& design_src.length>0){
+                design_name = ReadCookie("design_name");
+                $("#design").attr("src",getRootPath()+design_src)
+                $("#design").load(function() {
+                    $(this).contents().find(".control").attr("style","display:''");
+                })
+            }
+
         })
 
 
@@ -45,6 +57,7 @@
             layer.prompt({
                 title:"请输入模板名称"
                 ,formType: 3
+                ,value:design_name
             }, function(value, index){
                 var obj = document.getElementById("design").contentWindow;
                 var ifmObj = obj.document.getElementById("html").innerHTML;
@@ -133,6 +146,19 @@
         if (projectName == "/weixin" || projectName == "/admin"  || projectName == "/pc")
             projectName = "";
         return(localhostPaht + projectName);
+    }
+    /***
+     *读取指定的Cookie值
+     *@param {string} cookieName Cookie名称
+     */
+    function ReadCookie(cookieName) {
+        var theCookie = "" + document.cookie;
+        var ind = theCookie.indexOf(cookieName);
+        if(ind==-1 || cookieName=="") return "";
+        var ind1 = theCookie.indexOf(';',ind);
+        if(ind1==-1) ind1 = theCookie.length;
+        /*读取Cookie值*/
+        return unescape(theCookie.substring(ind+cookieName.length+1,ind1));
     }
 </script>
 </body>

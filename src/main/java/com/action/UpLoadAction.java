@@ -93,7 +93,7 @@ public class UpLoadAction {
         @ResponseBody
         @RequestMapping(value="/createHTML")
         public String createHTML(String htmltext,String page_name,String itexist) throws IOException {
-            htmltext = "<!DOCTYPE html>\n" +"<html>"+htmltext+"</html>";
+            htmltext = "<!DOCTYPE html>\n" +"<html id='html'>"+htmltext+"</html>";
             String pageName = System.currentTimeMillis()+"";
             File file = new File(pageurl+"/"+pageName+".html");
             // 创建一个新文件
