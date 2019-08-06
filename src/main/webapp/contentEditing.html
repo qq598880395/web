@@ -21,6 +21,7 @@
             <div class="layui-upload-list" id="demo2"></div>
         </blockquote>
         <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="testList">选择多文件</button>
+        <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="testListAction">开始上传</button>
         <div class="layui-upload-list">
             <table class="layui-table">
                 <thead>
@@ -35,9 +36,70 @@
                 <tbody id="demoList"></tbody>
             </table>
         </div>
-        <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="testListAction">开始上传</button>
+
     </div>
 </div>
+<div>
+<fieldset class="layui-elem-field">
+    <legend>卡片文章编辑上传</legend>
+    <div class="layui-field-box">
+        <div class="article-upload">
+            <form class="layui-form" action="">
+                <div class="layui-fluid">
+                    <div class="layui-row">
+                        <div class="layui-col-xs4">
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">文章标题</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                                </div>
+                            </div>
+
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">图片上传</label>
+                                <div class="layui-input-block">
+                                    <button type="button" class="layui-btn" id="test1">
+                                        <i class="layui-icon">&#xe67c;</i>上传图片
+                                    </button>
+                                    <div class="layui-upload-list">
+                                        <img class="layui-upload-img" id="demo1" style="width: 100px;height: 100px">
+                                        <input type="hidden" name="article_img">
+                                        <p id="demoText"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="layui-col-xs8">
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">文章内容</label>
+                                <div class="layui-input-block">
+                                    <textarea placeholder="请输入内容" name="textarea" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block" >
+                        <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</fieldset>
+</div>
+
 
 
 
@@ -54,15 +116,14 @@
 </script>
 
 <script>
-    var $,files;
+    var $,files,form;
 
-    layui.use(['jquery','upload','carousel','layer','table'], function() {
+    layui.use(['jquery','upload','carousel','layer','table','form'], function() {
         $ = layui.jquery;
         var layer = layui.layer,
             upload = layui.upload,
-            table = layui.table;
-
-
+            table = layui.table,
+            form=layui.form;
         //表格查询图片
         var tableIns = table.render({
             elem: '#UploadedLunboImg'
@@ -236,7 +297,27 @@
                 }
             });
 
+        //表单提交
+        //表单图片预览
+        var formimg=upload.render({
+            elem:'#test1',
+            before:function (obj) {
+                obj.preview(function (index,file,result) {
+                    $('#demo1').attr('src',result);
+                })
+            }
+        })
+
+        form.on('submit(demo1)', function(data){
+            layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            });
+            return false;
+        });
+
     });
+
+
     var getRootPath = function() {
         // http://localhost:8083/uimcardprj/share/meun.jsp
         var curWwwPath = window.document.location.href;
