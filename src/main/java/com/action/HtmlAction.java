@@ -40,7 +40,7 @@ public class HtmlAction {
     @ResponseBody
     @RequestMapping(value = "/searchNowImg")
     public String SerachNowImg(Integer template_id){
-        List<Img> imglist=imgService.searchImgById(template_id,"yes");
+        List<Img> imglist=imgService.searchImgById(template_id,"yes",null);
         JSONArray jsonArray = new JSONArray();
         for (Img img:imglist) {
             JSONObject jsonObject = new JSONObject();

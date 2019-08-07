@@ -40,67 +40,66 @@
     </div>
 </div>
 <div>
-<fieldset class="layui-elem-field">
-    <legend>卡片文章编辑上传</legend>
-    <div class="layui-field-box">
-        <div class="article-upload">
-            <form class="layui-form" action="">
-                <div class="layui-fluid">
-                    <div class="layui-row">
-                        <div class="layui-col-xs4">
+    <fieldset class="layui-elem-field">
+        <legend>卡片文章编辑上传</legend>
+        <div class="layui-field-box">
+            <div class="article-upload">
+                <form class="layui-form" action="">
+                    <div class="layui-fluid">
+                        <div class="layui-row">
+                            <div class="layui-col-xs4">
 
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">文章标题</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
-                                </div>
-                            </div>
-
-
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">图片上传</label>
-                                <div class="layui-input-block">
-                                    <button type="button" class="layui-btn" id="test1">
-                                        <i class="layui-icon">&#xe67c;</i>上传图片
-                                    </button>
-                                    <div class="layui-upload-list">
-                                        <img class="layui-upload-img" id="demo1" style="width: 100px;height: 100px">
-                                        <input type="hidden" name="article_img">
-                                        <p id="demoText"></p>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">文章标题</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" id="form-title" name="title" lay-verify="title"
+                                               autocomplete="off" placeholder="请输入标题" class="layui-input">
                                     </div>
                                 </div>
-                            </div>
 
-                        </div>
-                        <div class="layui-col-xs8">
-                            <div class="layui-form-item layui-form-text">
-                                <label class="layui-form-label">文章内容</label>
-                                <div class="layui-input-block">
-                                    <textarea placeholder="请输入内容" name="textarea" class="layui-textarea"></textarea>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">图片上传</label>
+                                    <div class="layui-input-block">
+                                        <button type="button" class="layui-btn" id="test1">
+                                            <i class="layui-icon">&#xe67c;</i>上传图片
+                                        </button>
+                                        <div class="layui-upload-list">
+                                            <img class="layui-upload-img" id="form-img" style="width: 100px;height: 100px">
+                                            <input type="hidden" name="article_img" id="hidden-img">
+                                            <p id="demoText"></p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
 
+                            </div>
+                            <div class="layui-col-xs8">
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">文章内容</label>
+                                    <div class="layui-input-block">
+                                        <textarea placeholder="请输入内容" name="textarea" lay-verify="required" class="layui-textarea"></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" id="form-submit" lay-submit="" lay-filter="demo1">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
 
-                </div>
 
-
-                <div class="layui-form-item">
-                    <div class="layui-input-block" >
-                        <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
-                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                    </div>
-                </div>
-
-
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
-</fieldset>
+    </fieldset>
 </div>
-
-
 
 
 <script type="text/html" id="barDemo">
@@ -116,107 +115,105 @@
 </script>
 
 <script>
-    var $,files,form;
+    var $, files, form;
 
-    layui.use(['jquery','upload','carousel','layer','table','form'], function() {
+    layui.use(['jquery', 'upload', 'carousel', 'layer', 'table', 'form'], function () {
         $ = layui.jquery;
         var layer = layui.layer,
             upload = layui.upload,
             table = layui.table,
-            form=layui.form;
+            form = layui.form;
         //表格查询图片
         var tableIns = table.render({
             elem: '#UploadedLunboImg'
-            ,height: "312px"
-            ,url: getRootPath()+'/html/searchImg' //数据接口
-            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+            , height: "312px"
+            , url: getRootPath() + '/html/searchImg' //数据接口
+            , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
                 //,curr: 5 //设定初始在第 5 页
-                ,groups: 3 //只显示 1 个连续页码
-                ,first: "首页" //不显示首页
-                ,last: "尾页" //不显示尾页
+                , groups: 3 //只显示 1 个连续页码
+                , first: "首页" //不显示首页
+                , last: "尾页" //不显示尾页
             }
-            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，
-            ,limit: 5
-            ,limits:[5,10,15]
-            ,id:"#UploadedLunboImg"
-            ,cols: [[ //表头
-                {field: 'img_id', title: 'ID',sort: true, fixed: 'left'}
-                ,{field: 'img_name', title: '图片名',}
-                ,{field: 'img_href', title: '图片对应链接', }
-                ,{field: 'img_status', title: '是否显示',}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
+            , cellMinWidth: 80 //全局定义常规单元格的最小宽度，
+            , limit: 5
+            , limits: [5, 10, 15]
+            , id: "#UploadedLunboImg"
+            , cols: [[ //表头
+                {field: 'img_id', title: 'ID', sort: true, fixed: 'left'}
+                , {field: 'img_name', title: '图片名',}
+                , {field: 'img_href', title: '图片对应链接',}
+                , {field: 'img_status', title: '是否显示',}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo'}
             ]]
         });
 
         //监听行工具事件
-        table.on('tool(test)', function(obj){
+        table.on('tool(test)', function (obj) {
             var data = obj.data;
             //console.log(obj)
-            if(obj.event === 'del'){
-                layer.confirm('真的删除行么', function(index){
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
                     obj.del();
                     layer.close(index);
                     //后台操作
                     $.ajax({
-                        url : getRootPath()+"/html/delImg",
-                        type : "get",
-                        data : {"img_id":data.img_id,"img_src":data.img_src},
-                        datatype:"json",
-                        success : function(data) {
+                        url: getRootPath() + "/html/delImg",
+                        type: "get",
+                        data: {"img_id": data.img_id, "img_src": data.img_src},
+                        datatype: "json",
+                        success: function (data) {
                         }
                     });
 
                 });
-            } else if(obj.event === 'edit'){
+            } else if (obj.event === 'edit') {
                 layer.prompt({
-                    title:"输入跳转链接,外网链接以 https:// 开头"
-                    ,formType: 3
-                    ,value: data.img_href
-                }, function(value, index){
+                    title: "输入跳转链接,外网链接以 https:// 开头"
+                    , formType: 3
+                    , value: data.img_href
+                }, function (value, index) {
                     obj.update({
                         img_href: value
                     });
                     layer.close(index);
                     //后台操作
                     $.ajax({
-                        url : getRootPath()+"/html/updataImg_href",
-                        type : "get",
-                        data : {"img_href":value,"img_id":data.img_id},
-                        success : function() {
+                        url: getRootPath() + "/html/updataImg_href",
+                        type: "get",
+                        data: {"img_href": value, "img_id": data.img_id},
+                        success: function () {
                         }
                     });
                 });
-            }else if(obj.event === 'yes'){
+            } else if (obj.event === 'yes') {
                 obj.update({
                     img_status: "yes"
                 });
                 //后台操作
                 $.ajax({
-                    url : getRootPath()+"/html/updataImg_status",
-                    type : "get",
-                    data : {"img_status":"yes","img_id":obj.data.img_id},
-                    success : function() {
-                        tableIns.reload({
-                        }
+                    url: getRootPath() + "/html/updataImg_status",
+                    type: "get",
+                    data: {"img_status": "yes", "img_id": obj.data.img_id},
+                    success: function () {
+                        tableIns.reload({}
                         )
                     }
                 });
-            }else if(obj.event === 'no'){
+            } else if (obj.event === 'no') {
                 obj.update({
                     img_status: "no"
                 });
                 //后台操作
                 $.ajax({
-                    url : getRootPath()+"/html/updataImg_status",
-                    type : "get",
-                    data : {"img_status":"no","img_id":obj.data.img_id},
-                    success : function() {
+                    url: getRootPath() + "/html/updataImg_status",
+                    type: "get",
+                    data: {"img_status": "no", "img_id": obj.data.img_id},
+                    success: function () {
                         tableIns.reload()
                     }
                 });
-            }
-            else if(obj.event === 'preview'){
+            } else if (obj.event === 'preview') {
                 layer.open({
                     type: 1,
                     skin: 'layui-layer-demo', //样式类名
@@ -224,7 +221,7 @@
                     offset: '50px',
                     anim: 2,
                     shadeClose: true, //开启遮罩关闭
-                    content: '<img width="400px" src="'+getRootPath()+"/"+data.img_src+'" />'
+                    content: '<img width="400px" src="' + getRootPath() + "/" + data.img_src + '" />'
                 });
             }
         });
@@ -234,52 +231,52 @@
         var demoListView = $('#demoList'),
             uploadListIns = upload.render({
                 elem: '#testList',
-                url: getRootPath()+'/upload/uploadImage',
+                url: getRootPath() + '/upload/uploadImage',
                 multiple: true,
                 auto: false,
                 bindAction: '#testListAction',
                 accept: 'images',
-                data:{
-                    params:''
+                data: {
+                    params: ''
                 },
-                before: function(obj) {
+                before: function (obj) {
                     var map = [];
                     layui.each($('input[name="img_href"]'), function (index, item) {
-                        map.push({"fileName":$(item).parents('td').prev().html(),"img_href":$(item).val()});
+                        map.push({"fileName": $(item).parents('td').prev().html(), "img_href": $(item).val()});
                     });
-                    this.data.params = JSON.stringify(map)
+                    this.data.params = JSON.stringify(map);
                 },
-                choose: function(obj) {
+                choose: function (obj) {
                     //files改为全局变量
                     files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
                     //读取本地文件
-                    obj.preview(function(index, file, result) {
-                        $('#demo2').append('<img id="'+index+'" src="'+ result +'" alt="'+ file.name +'" style="height: 150px;" class="layui-upload-img">');
-                        var tr = $(['<tr id="upload-' + index + '">', '<td>'+file.name+'</td>',
-                            '<td><input id="t-'+index+'" name="img_href" type="text" style="height:25px" class="layui-input" placeholder="外网链接请以 https:// 开头" ></td>', '<td>' + (file.size / 1014).toFixed(
+                    obj.preview(function (index, file, result) {
+                        $('#demo2').append('<img id="' + index + '" src="' + result + '" alt="' + file.name + '" style="height: 150px;" class="layui-upload-img">');
+                        var tr = $(['<tr id="upload-' + index + '">', '<td>' + file.name + '</td>',
+                            '<td><input id="t-' + index + '" name="img_href" type="text" style="height:25px" class="layui-input" placeholder="外网链接请以 https:// 开头" ></td>', '<td>' + (file.size / 1014).toFixed(
                                 1) + 'kb</td>', '<td>等待上传</td>', '<td>',
                             '<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>', '</td>', '</tr>'
                         ].join(''));
 
                         //删除
-                        tr.find('.demo-delete').on('click', function() {
+                        tr.find('.demo-delete').on('click', function () {
                             delete files[index]; //删除对应的文件
-                            $('#'+index).remove();
+                            $('#' + index).remove();
                             tr.remove();
                             uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
                         });
 
                         //单个重传
-                        tr.find('.demo-reload').on('click', function(){
+                        tr.find('.demo-reload').on('click', function () {
                             obj.upload(index, file);
                         });
-                            demoListView.append(tr);
+                        demoListView.append(tr);
                     });
                 },
-                done: function(res, index, upload) {
+                done: function (res, index, upload) {
                     tableIns.reload();
                     if (res.code == "0") { //上传成功
-                        var tds =  $('#upload-' + index).children();
+                        var tds = $('#upload-' + index).children();
                         tds.eq(3).html('<span style="color: #5FB878;">上传成功</span>');
                         tds.eq(4).html(''); //清空操作
                         delete this.files[index]; //删除文件队列已经上传成功的文件
@@ -288,7 +285,7 @@
                     }
                     this.error(index, upload);
                 },
-                error: function(index, upload) {
+                error: function (index, upload) {
                     //上传出错
                     var tr = demoListView.find('tr#upload-' + index),
                         tds = tr.children();
@@ -299,26 +296,61 @@
 
         //表单提交
         //表单图片预览
-        var formimg=upload.render({
-            elem:'#test1',
-            before:function (obj) {
-                obj.preview(function (index,file,result) {
-                    $('#demo1').attr('src',result);
+        /**
+         *
+         */
+        var formImg = upload.render({
+            elem: '#test1',
+            type:'post',
+            auto: false,
+            bindAction: '#form-submit',
+            accept: 'images',
+            data: {
+                title: '',
+                text: ''
+            },
+            url: getRootPath() + '/upload/uploadArticle',
+            before: function (obj) {
+                //表单验证
+                form.verify({
+                    title:function (value) {
+                        if(value.length==0){
+                            return '文章标题不能为空';
+                            this.error(index, upload);
+                        }else if(value.length>20){
+                            return '文章标题不能超过20个字';
+                        }
+                    }
+                });
+                var title = $('#form-title').val();
+                var text = $('.layui-textarea').val();
+                this.data.title = title;
+                this.data.text = text;
+                alert(JSON.stringify(this.data));
+            },
+            choose: function (obj) {
+                obj.preview(function (index, file, result) {
+                    $('#form-img').attr('src', result);
+                    $('#hidden-img').attr('name', result);
                 })
+            },
+            done: function (res, index, upload) {
+                if (res.code=="0") {
+                    alert("上传成功");
+                }
+            },
+            error: function (index,upload) {
+                alert("上传失败null");
             }
-        })
-
-        form.on('submit(demo1)', function(data){
-            layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            });
-            return false;
         });
+
+
+
 
     });
 
 
-    var getRootPath = function() {
+    var getRootPath = function () {
         // http://localhost:8083/uimcardprj/share/meun.jsp
         var curWwwPath = window.document.location.href;
         // uimcardprj/share/meun.jsp
@@ -329,9 +361,9 @@
         // uimcardprj
         var projectName = pathName
             .substring(0, pathName.substr(1).indexOf('/') + 1);
-        if (projectName == "/weixin" || projectName == "/admin"  || projectName == "/pc")
+        if (projectName == "/weixin" || projectName == "/admin" || projectName == "/pc")
             projectName = "";
-        return(localhostPaht + projectName);
+        return (localhostPaht + projectName);
     }
 </script>
 

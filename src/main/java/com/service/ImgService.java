@@ -23,17 +23,20 @@ public class ImgService {
         img.setImg_name(img_name);
         img.setImg_src(newFilePath);
         img.setTemplate_id(tmpid);
-        img.setImg_href(img_href);
+        if(img_href!=null){
+            img.setImg_href(img_href);
+        }else img.setImg_href("#");
         img.setImg_status("yes");
         int n=imgDAO.insert(img);
         return n;
     }
 
     //查询当前模块图片
-    public List<Img> searchImgById(Integer tmpid, String imgStatus){
+    public List<Img> searchImgById(Integer tmpid, String imgStatus,String img_src){
         QueryWrapper qw =new QueryWrapper();
         qw.eq("template_id",tmpid);
         qw.eq("img_status",imgStatus);
+        qw.eq("img_src",img_src);
         List<Img> imgList= imgDAO.selectList(qw);
         return imgList;
     }
