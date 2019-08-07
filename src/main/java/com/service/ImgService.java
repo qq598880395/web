@@ -73,4 +73,10 @@ public class ImgService {
         imgDAO.update(img,uw);
     }
 
+    public List<Img> searchImgsByTemplate_id(int template_id) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("template_id",template_id);
+        List<Img> img_list = imgDAO.selectList(queryWrapper);
+        return img_list;
+    }
 }

@@ -1,0 +1,155 @@
+<div class="layui-show-xs-block">
+	<div class="layui-container home-menu">
+		<div class="layui-row layui-col-space10" id="modnav-item">
+			<div class="layui-col-xs3 control" id="add">
+				<div class="home-menu-list">
+						<ul class="home-list-node">
+							<li class="home-node-icon"><img src="../img/modnav/add.png" class="home-icon-img"></li>
+							<li class="home-node-text">添加</li>
+						</ul>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<script>
+	var $,layer;
+	var num = 0;
+
+	layui.use(['jquery','layer','upload'], function() {
+		$ = layui.jquery;
+		layer = layui.layer,
+			upload = layui.upload;
+
+		$("#add").click(function () {
+			layer.open({
+				title: '选择添加的组件',
+				btn: ['确定', '取消'],//可以无限个按钮
+				skin: 'layui-layer-demo', //样式类名
+				area: ['100%', '50%'],
+				closeBtn: 0, //不显示关闭按钮
+				content:'<div class="layui-form-item">\n' +
+						'    <label class="layui-form-label">按钮标题</label>\n' +
+						'    <div class="layui-input-block">\n' +
+						'      <input id="mod_title" type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">\n' +
+						'    </div><br>\n' +
+						'    <label class="layui-form-label">按钮超链接</label>\n' +
+						'    <div class="layui-input-block">\n' +
+						'      <input id="mod_href" type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入超链接,外网链接以https://开头" class="layui-input">\n' +
+						'    </div><br>\n' +
+						'    <label class="layui-form-label">图片上传</label>\n' +
+						'    <div class="layui-upload">\n' +
+						'<button type="button" class="layui-btn layui-btn-sm" id="selectImg" onclick="selectImg()">选择已上传图片</button>\n' +
+						'<button type="button" class="layui-btn layui-btn-sm" id="formImg">本地上传</button>\n' +
+						'<div class="layui-upload-list">\n' +
+						'<img class="layui-upload-img" id="Imgdemo" style="width: 100px;height: 100px;">\n' +
+						'<p id="demoText"></p>\n' +
+						'</div>\n'+
+						'</div>\n'+
+						'</div>\n',
+				success:function(){
+					//普通图片上传
+					var uploadInst = upload.render({
+						elem: '#formImg'
+						,url: getRootPath()+'/upload/uploadModImg'
+						,auto:true
+						,choose: function(obj){
+							//预读本地文件示例，不支持ie8
+							obj.preview(function(index, file, result){
+								$('#Imgdemo').attr('src', result); //图片链接（base64）
+							});
+						},before:function (obj) {
+							
+						}
+						,done: function(res){
+							if(res.code==0){
+								$("#img-"+(num-1)).attr("src",getRootPath()+res.modUrl);
+							}
+							//如果上传失败
+							if(res.code > 0){
+								alert("上传出错");
+								return layer.msg('上传失败');
+							}
+							//上传成功
+						}
+						,error: function(){
+							//演示失败状态，并实现重传
+							var demoText = $('#demoText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span><a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function(){
+								uploadInst.upload();
+							});
+						}
+					});
+				},
+				btn1: function(index, layero) {
+					//按钮【按钮一】的回调确定
+					var mod_href = $("#mod_href").val();
+					var mod_title = $("#mod_title").val()
+					layer.close(index);
+					$("#a-"+(num-1)).attr("href",mod_href);
+					$("#mod_text-"+(num-1)).html(mod_title);
+				},
+				btn2: function(index, layero) {
+					//按钮二回调,添加模块导航
+					layer.close(index);
+					$("#add").prev().remove();
+				}
+
+			});
+
+			$('#add').before('<div class="layui-col-xs3 settings"><div class="home-menu-list"><a id="a-'+num+'" href="#"><ul class="home-list-node"><li class="home-node-icon"><img id="img-'+num+'" src="../img/modnav/uploadImg.png" class="home-icon-img"></li><li class="home-node-text" id="mod_text-'+(num++)+'">设置</li></ul></a></div><div onclick="del_mod(this)" class="del_mod control"><img width="15px" src="../img/modnav/del.png"></div></div>');
+		})
+
+	});
+
+	function del_mod(x){
+		layer.confirm('确定删除吗？', {
+			btn: ['确定','取消'] //按钮
+		}, function(){
+			layer.msg('删除成功', {icon: 1});
+			$(x).parent().remove();
+		}, function(){
+			layer.msg({
+				time: 0
+			}
+			);
+		});
+	}
+
+	function selectImg(){
+		layer.open({
+			title:'双击选择图片',
+			type: 1,
+			skin: 'layui-layer-demo', //样式类名
+			area: ['100%', '70%'],
+			anim: 2,
+			shadeClose: true, //开启遮罩关闭
+			content: '<div id="Imgs"></div>',
+			success:function () {
+				$.ajax({
+					url : getRootPath()+"/html/searchImgs",
+					type : "post",
+					data :{"template_id":3},
+					datatype:"json",
+					success : function(data) {
+						var jsonArray = JSON.parse(data);
+						for (var i= 0;i<jsonArray.length;i++) {
+							$("#Imgs").append('<span style="padding: 1%" ondblclick="selectModImg(this)"><img class="mod_img" style="width: 15%" src="'+getRootPath()+'/'+jsonArray[i].img_src+'"></span>')
+						}
+					}
+				});
+			}
+
+		});
+	}
+	
+	function selectModImg(x) {
+		var src = $(x).find(".mod_img").attr("src");
+		$("#Imgdemo").attr("src",src);
+		$("#img-"+(num-1)).attr("src",src);
+		layer.close(layer.index);
+	}
+
+</script>

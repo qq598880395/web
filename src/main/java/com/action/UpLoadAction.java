@@ -30,7 +30,8 @@ public class UpLoadAction {
     private ImgService imgService;
 
     private String pageurl = System.getProperty("ROOT") + "/page"; // 上传页面的目录
-    private String uploadPath = System.getProperty("ROOT") + "/img/lunbo"; // 上传图片的目录
+    private String uploadPath = System.getProperty("ROOT") + "/img/lunbo"; // 上传轮播图片的目录
+    private String uploadMod = System.getProperty("ROOT") + "/img/modnav"; // 上传mod图片的目录
 
 
     @RequestMapping("/uploadImage")
@@ -65,8 +66,7 @@ public class UpLoadAction {
                 BufferedOutputStream out = new BufferedOutputStream(
                         new FileOutputStream(new File(uploadPath, newFileName)));
                 out.write(file.getBytes());
-                int n = imgService.addImage(newFileName,"img/lunbo/"+newFileName,1,href);
-                System.out.println(n);
+                imgService.addImage(newFileName,"img/lunbo/"+newFileName,1,href);
                 out.flush();
                 out.close();
                
@@ -87,6 +87,49 @@ public class UpLoadAction {
             return res;
         }
 
+    }
+    //上传mod图片
+    @RequestMapping("/uploadModImg")
+    @ResponseBody
+    public JSONObject uploadModImg(@RequestParam("file") MultipartFile file) {
+        JSONObject res = new JSONObject();
+        String modUrl = null;
+        if (!file.isEmpty()) {
+            try {
+                //得到旧文件名
+                String oldFileName = file.getOriginalFilename();
+                //得到后缀名
+                int index = oldFileName.lastIndexOf(".");
+                String extName = oldFileName.substring(index);
+                //新文件名
+                String newFileName = System.nanoTime() + extName;
+                File savePathFile = new File(uploadMod);
+                if (savePathFile.exists() == false){
+                    savePathFile.mkdirs();
+                }
+                BufferedOutputStream out = new BufferedOutputStream(
+                        new FileOutputStream(new File(uploadMod, newFileName)));
+                out.write(file.getBytes());
+                out.flush();
+                out.close();
+                imgService.addImage(newFileName,"img/modnav/"+newFileName,3,"#");
+                modUrl = "/img/modnav/"+newFileName;
+            } catch (IOException e) {
+                res.put("code", 1);
+                res.put("msg", "上传出错");
+                res.put("modUrl", modUrl);
+                return res;
+            }
+            res.put("code", 0);
+            res.put("msg", "上传成功");
+            res.put("modUrl", modUrl);
+            return res;
+        } else {
+            res.put("code", 0);
+            res.put("msg", "上传为空");
+            res.put("modUrl", modUrl);
+            return res;
+        }
     }
 
     //上传页面
