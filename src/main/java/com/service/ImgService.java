@@ -36,7 +36,9 @@ public class ImgService {
         QueryWrapper qw =new QueryWrapper();
         qw.eq("template_id",tmpid);
         qw.eq("img_status",imgStatus);
-        qw.eq("img_src",img_src);
+        if (img_src!=null&&img_src.length()>0){
+            qw.eq("img_src",img_src);
+        }
         List<Img> imgList= imgDAO.selectList(qw);
         return imgList;
     }
