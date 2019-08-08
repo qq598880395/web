@@ -76,6 +76,9 @@
                             data: {"page_id": data.page_id, "page_src": data.page_src},
                             datatype: "json",
                             success: function (data) {
+                                tableIns.reload({
+
+                                })
                             }
                         });
 
@@ -91,7 +94,12 @@
                         shade: 0.8,
                         area: ['95%', '90%'],
                         maxmin: true,
-                        content: getRootPath()+'/templateDesign.html' //iframe的url
+                        content: getRootPath()+'/templateDesign.html', //iframe的url
+                        end:function () {
+                            tableIns.reload({
+
+                            })
+                        }
                     });
                     //后台操作
 
