@@ -35,7 +35,7 @@ public class UpLoadAction {
 
     @RequestMapping("/uploadImage")
     @ResponseBody
-    public JSONObject uploadImage(@RequestParam("file") MultipartFile file, String params) {
+    public JSONObject uploadImage( @RequestParam("file")MultipartFile file, String params) {
         String href = "#";
         List<ImgHrefVo> testDemos = JSON.parseArray(params, ImgHrefVo.class);
         for (int i = 0; i < testDemos.size(); i++) {

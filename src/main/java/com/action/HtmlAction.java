@@ -2,14 +2,17 @@ package com.action;
 
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.pojo.Img;
 import com.pojo.Page;
 import com.service.ImgService;
 import com.service.PageService;
+import com.vo.ImgHrefVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.File;
@@ -72,6 +75,30 @@ public class HtmlAction {
         DelFile(img_src);
     }
 
+    //批量删除图片
+    @ResponseBody
+    @RequestMapping("/delMostImg")
+    public  int delMostImg(String params){
+        List testDemos = JSON.parseArray(params);
+        com.alibaba.fastjson.JSONArray imgJson = new com.alibaba.fastjson.JSONArray(testDemos);
+        int n = imgService.delMostImg(imgJson);
+        DelMostFile(imgJson);
+         return n;
+    }
+
+    //批量删除服务器里的文件
+    private void DelMostFile(com.alibaba.fastjson.JSONArray imgJson) {
+        com.alibaba.fastjson.JSONArray jsonArray = null;
+        jsonArray = new com.alibaba.fastjson.JSONArray(imgJson);
+        for (int i=0;i<jsonArray.size();i++){
+            File file = new File(System.getProperty("ROOT") + jsonArray.getJSONObject(i).get("img_src"));
+            if (file.exists()==true){
+                file.delete();
+//                System.out.println("文件还在嘛：" + file.exists());//判断文件是否删除成功
+            }
+        }
+    }
+
     //更新图片对应的链接
     @ResponseBody
     @RequestMapping(value = "/updataImg_href")
@@ -126,5 +153,7 @@ public class HtmlAction {
     public void updataPage_status(String page_id){
         pageService.updataPage_status(page_id);
     }
+
+
 
 }

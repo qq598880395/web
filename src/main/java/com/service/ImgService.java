@@ -1,5 +1,6 @@
 package com.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 @Service
 public class ImgService {
@@ -72,5 +74,17 @@ public class ImgService {
         img.setImg_status(img_status);
         imgDAO.update(img,uw);
     }
+
+    //根据id批量删除图片
+    public int delMostImg(JSONArray imgJson) {
+        int n = 0;
+        JSONArray jsonArray = null;
+        jsonArray = new JSONArray(imgJson);
+        for (int i=0;i<jsonArray.size();i++){
+            int img_id = (int) jsonArray.getJSONObject(i).get("img_id");
+            n = imgDAO.deleteById(img_id);
+        }
+        return n;
+  }
 
 }

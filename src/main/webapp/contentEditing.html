@@ -9,6 +9,9 @@
 <body>
 <div>
     <h2>已上传的轮播图片</h2>
+    <div class="layui-btn-group demoTable">
+        <button class="layui-btn" data-type="isAll" >一键删除</button>
+    </div>
     <table id="UploadedLunboImg" lay-filter="test"></table>
 
 </div>
@@ -35,6 +38,7 @@
                 <tbody id="demoList"></tbody>
             </table>
         </div>
+
         <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="testListAction">开始上传</button>
     </div>
 </div>
@@ -79,13 +83,52 @@
             ,limit: 5
             ,limits:[5,10,15]
             ,id:"#UploadedLunboImg"
-            ,cols: [[ //表头
-                {field: 'img_id', title: 'ID',sort: true, fixed: 'left'}
-                ,{field: 'img_name', title: '图片名',}
-                ,{field: 'img_href', title: '图片对应链接', }
-                ,{field: 'img_status', title: '是否显示',}
+            ,cols: [[
+                 {type:'checkbox',fixed: 'left'}
+                ,{field: 'img_id', title: 'ID',sort: true}
+                ,{field: 'img_name', title: '图片名'}
+                ,{field: 'img_href', title: '图片对应链接'}
+                ,{field: 'img_status', title: '是否显示'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
             ]]
+        });
+
+        //一键删除实现
+        var $ = layui.$, active = {
+            isAll: function(){
+                var checkStatus = table.checkStatus('#UploadedLunboImg')
+                    ,data = checkStatus.data;
+                if (data == '')
+                    layer.msg('请先选择要删除的数据');
+                if (data != ''){
+                    var map = [];
+                    for (var i=0;i<data.length;i++){
+                        map.push({"img_id":data[i].img_id,"img_src":data[i].img_src});
+                    }
+                    var imgJson = JSON.stringify(map)
+                   // 后台操作
+                    layer.confirm("您确定要删除吗？",function(){
+                        $.ajax({
+                            type:"post",
+                            url: getRootPath()+'/html/delMostImg',
+                            data:{params:imgJson} ,
+                            success:function (data) {
+                                layer.closeAll('loading');
+                                if(data == 1){
+                                    parent.layer.msg('删除成功！', {icon: 1,time:2000,shade:0.2});
+                                    location.reload(true);
+                                }else{
+                                    parent.layer.msg('删除失败！', {icon: 2,time:3000,shade:0.2});
+                                }
+                            }
+                        })
+                    })
+                }
+            }
+        };
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
         });
 
         //监听行工具事件
@@ -101,7 +144,7 @@
                         url : getRootPath()+"/html/delImg",
                         type : "get",
                         data : {"img_id":data.img_id,"img_src":data.img_src},
-                        datatype:"json",
+                        dataType:"json",
                         success : function(data) {
                         }
                     });
