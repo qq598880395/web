@@ -89,6 +89,7 @@
 					element = layui.element;
 				$ = layui.jquery;
 
+
 				//后面就跟你平时使用jQuery一样
 				
 				//添加轮播
@@ -130,7 +131,7 @@
 							addNewDiv();
 							addDelbutton();
 							addhr();
-							$(templateDiv).load(getRootPath()+"/template/modnav.html",function(){
+							$(templateDiv).load(getRootPath()+"/template/modnav1.html",function(){
 								$(templateDiv).append(button);
 								$(templateDiv).append(hr);
 								$('#new-div').append(templateDiv);
@@ -173,7 +174,6 @@
 			function delTemplate(a){
 				$(a).parent().remove();
 			}
-
 			var getRootPath = function() {
 				// http://localhost:8083/uimcardprj/share/meun.jsp
 				var curWwwPath = window.document.location.href;

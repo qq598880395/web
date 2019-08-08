@@ -43,7 +43,7 @@ public class HtmlAction {
     @ResponseBody
     @RequestMapping(value = "/searchNowImg")
     public String SerachNowImg(Integer template_id){
-        List<Img> imglist=imgService.searchImgById(template_id,"yes");
+        List<Img> imglist=imgService.searchImgById(template_id,"yes",null);
         JSONArray jsonArray = new JSONArray();
         for (Img img:imglist) {
             JSONObject jsonObject = new JSONObject();
@@ -154,6 +154,17 @@ public class HtmlAction {
         pageService.updataPage_status(page_id);
     }
 
-
-
+    //查询模块中的所有图片
+    @ResponseBody
+    @RequestMapping(value = "/searchImgs")
+    public String searchImgs(int template_id){
+        List<Img> img_list = imgService.searchImgsByTemplate_id(template_id);
+        JSONArray jsonArray = new JSONArray();
+        for (Img img:img_list) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("img_src",img.getImg_src());
+            jsonArray.add(jsonObject);
+        }
+        return jsonArray.toString();
+    }
 }

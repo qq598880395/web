@@ -25,17 +25,22 @@ public class ImgService {
         img.setImg_name(img_name);
         img.setImg_src(newFilePath);
         img.setTemplate_id(tmpid);
-        img.setImg_href(img_href);
+        if(img_href!=null){
+            img.setImg_href(img_href);
+        }else img.setImg_href("#");
         img.setImg_status("yes");
         int n=imgDAO.insert(img);
         return n;
     }
 
     //查询当前模块图片
-    public List<Img> searchImgById(Integer tmpid, String imgStatus){
+    public List<Img> searchImgById(Integer tmpid, String imgStatus,String img_src){
         QueryWrapper qw =new QueryWrapper();
         qw.eq("template_id",tmpid);
         qw.eq("img_status",imgStatus);
+        if (img_src!=null&&img_src.length()>0){
+            qw.eq("img_src",img_src);
+        }
         List<Img> imgList= imgDAO.selectList(qw);
         return imgList;
     }
@@ -73,6 +78,13 @@ public class ImgService {
         uw.eq("img_id",img_id);
         img.setImg_status(img_status);
         imgDAO.update(img,uw);
+    }
+
+    public List<Img> searchImgsByTemplate_id(int template_id) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("template_id",template_id);
+        List<Img> img_list = imgDAO.selectList(queryWrapper);
+        return img_list;
     }
 
     //根据id批量删除图片
