@@ -9,6 +9,9 @@
 <body>
     <div>
         <h2>历史模板</h2>
+        <div class="layui-btn-group demoTable">
+            <button class="layui-btn" data-type="isAll" >一键删除</button>
+        </div>
         <table id="historyHtml" lay-filter="test"></table>
 
     </div>
@@ -35,6 +38,44 @@
                 table = layui.table;
 
 
+            //一键删除实现
+            var $ = layui.$, active = {
+                isAll: function(){
+                    var checkStatus = table.checkStatus('#historyHtml')
+                        ,data = checkStatus.data;
+                    if (data == '')
+                        layer.msg('请先选择要删除的数据');
+                    if (data != ''){
+                        var map = [];
+                        for (var i=0;i<data.length;i++){
+                            map.push({"page_id":data[i].page_id,"page_src":data[i].page_src});
+                        }
+                        var pageJson = JSON.stringify(map)
+                        // 后台操作
+                        layer.confirm("您确定要删除吗？",function(){
+                            $.ajax({
+                                type:"post",
+                                url: getRootPath()+'/html/delMostPage',
+                                data:{params:pageJson} ,
+                                success:function (data) {
+                                    layer.closeAll('loading');
+                                    if(data == 1){
+                                        parent.layer.msg('删除成功！', {icon: 1,time:2000,shade:0.2});
+                                        location.reload(true);
+                                    }else{
+                                        parent.layer.msg('删除失败！', {icon: 2,time:3000,shade:0.2});
+                                    }
+                                }
+                            })
+                        })
+                    }
+                }
+            };
+            $('.demoTable .layui-btn').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
             //表格查询图片
             var tableIns = table.render({
                 elem: '#historyHtml'
@@ -52,7 +93,8 @@
                 , limits: [5, 10, 15]
                 , id: "#historyHtml"
                 , cols: [[ //表头
-                    {field: 'page_id', title: 'ID', sort: true, fixed: 'left'}
+                    {type:'checkbox',fixed: 'left'}
+                    ,{field: 'page_id', title: 'ID', sort: true}
                     , {field: 'page_name', title: '页面名',}
                     , {field: 'page_src', title: '页面路径',}
                     , {field: 'create_time', title: '创建时间',}

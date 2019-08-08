@@ -1,5 +1,6 @@
 package com.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -99,5 +100,16 @@ public class PageService {
         updateWrapper2.eq("page_id",page_id);
         page.setPage_status("yes");
         pageDAO.update(page,updateWrapper2);
+    }
+
+    public int delMostPage(JSONArray pageJson) {
+        int n = 0;
+        JSONArray jsonArray = null;
+        jsonArray = new JSONArray(pageJson);
+        for (int i=0;i<jsonArray.size();i++){
+            int page_id = (int) jsonArray.getJSONObject(i).get("page_id");
+            n = pageDAO.deleteById(page_id);
+        }
+        return n;
     }
 }
