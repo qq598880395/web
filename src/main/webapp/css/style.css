@@ -43,13 +43,15 @@ body{
 	margin: 5% 0 ;
 }
 .book{
+	position: relative;
+	top:-15px;
 	padding-top: 5px;
 	padding-bottom: 5%;
 	padding-left: 7%;
 	padding-right: 7%;
-	background: #EAFFFD;
-	border-top-right-radius: 10px;
-	border-top-left-radius: 10px;
+	background: #FFFEFD;
+	border-top-right-radius: 15px;
+	border-top-left-radius: 15px;
 }
 .book h3{
 	padding-bottom: 5%;
@@ -60,7 +62,7 @@ body{
 }
 
 .home-menu{
-				background-color: #EAFFFD;
+				background-color: #FFFAF4;
 				border-top-right-radius: 10px;
 				border-top-left-radius: 10px;
 			}
