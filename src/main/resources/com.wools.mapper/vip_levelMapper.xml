@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.Vip_levelDAO">
+
+    <select id="findbylevel_id" parameterType="int" resultType="com.pojo.Vip_level">
+         select level_id,level_name,level_need,level_cost,next_need
+         from  vip_level
+         where level_id=#{level_id}
+     </select>
+
+</mapper>

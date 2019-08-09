@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.RechargeDAO">
+    <insert id="addOrder" >
+         insert into recharge(vip_id,rc_id,rc_cost,hotel_id,vip_name,vip_tel,rc_cost_1st)
+          values(#{vip_id},#{rc_id},#{rc_cost},#{hotel_id},#{vip_name},#{vip_tel},#{rc_cost_1st})
+     </insert>
+    <!-- 通过条件分页查询，返回数据集 -->
+    <select id="selectPageList" parameterType="com.util.Page" resultType="com.pojo.Recharge">
+        select
+        vip_id,rc_id,rc_cost,hotel_id,vip_name,vip_tel,rc_time,rc_cost_1st
+        from recharge
+        <where>
+            <if test="keyWord!='' and keyType=='vip_tel' ">
+                AND vip_tel like '%' #{keyWord} '%'
+            </if>
+            <if test="keyWord!='' and keyType=='vip_name' ">
+                AND vip_name like '%' #{keyWord} '%'
+            </if>
+
+        </where>
+        order by rc_time DESC
+        limit #{start},#{rows}
+    </select>
+
+    <!-- 通过条件分页查询，返回总记录数 -->
+    <select id="selectPageCount" parameterType="com.util.Page"  resultType="Integer">
+
+    select count(*) from recharge
+    <where>
+
+        <if test="keyWord!='' and keyType=='vip_tel' ">
+            AND vip_tel like '%' #{keyWord} '%'
+        </if>
+        <if test="keyWord!='' and keyType=='vip_name' ">
+            AND vip_name like '%' #{keyWord} '%'
+        </if>
+    </where>
+    </select>
+</mapper>
