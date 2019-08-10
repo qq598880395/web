@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.Rc_caseDAO">
+    <update id="updateRcCase" >
+         update rc_case set rc_a=#{rc_a},rc_b=#{rc_b},rc_c=#{rc_c},rc_a_regiv=#{rc_a_regiv},rc_b_regiv=#{rc_b_regiv},rc_c_regiv=#{rc_c_regiv}
+          where rc_caseid=#{rc_caseid}
+     </update>
+    <select id="findbyRc_id" parameterType="int" resultType="com.pojo.Rc_case">
+         select rc_caseid,rc_a,rc_b,rc_c,rc_a_regiv,rc_b_regiv,rc_c_regiv
+         from  rc_case
+         where rc_caseid=#{rc_caseid}
+     </select>
+
+</mapper>

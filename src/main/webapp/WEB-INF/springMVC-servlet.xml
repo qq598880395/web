@@ -37,6 +37,11 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 
+	<!-- 进行配置日志生成文档 -->
+	<!--将静态资源交由默认的servlet处理 -->
+	<mvc:default-servlet-handler />
+
+
 	<!--文件上传配置-->
 	<bean id="multipartResolver"
 		  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

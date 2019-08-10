@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.VipDAO">
+
+    <select id="findbyVip_name" parameterType="String" resultType="com.pojo.Vip">
+         select vip_id,openid,vip_tel,vip_name,vip_IDcard,vip_money,vip_time,hotel_id,hotel_name,level_id,level_num
+         from  vip_list
+         where vip_name=#{vip_name}
+     </select>
+
+     <select id="findbyVip_id" parameterType="String" resultType="com.pojo.Vip">
+         select vip_id,openid,vip_tel,vip_name,vip_IDcard,vip_money,vip_time,hotel_id,hotel_name,level_id,level_num
+         from  vip_list
+         where vip_id=#{vip_id}
+     </select>
+     <select id="findbyVip_tel"  resultType="com.pojo.Vip">
+         select vip_id,openid,vip_tel,vip_name,vip_IDcard,vip_money,vip_time,hotel_id,hotel_name,level_id,level_num
+         from  vip_list
+         where vip_tel=#{vip_tel} and hotel_id=#{hotel_id}
+     </select>
+
+     <insert id="addVipBytel" >
+         insert into vip_list(vip_id,vip_tel,vip_name,vip_money,hotel_id,hotel_name)
+          values(#{vip_id},#{tel},#{tel},0,1001,'woolls')
+     </insert>
+
+    <insert id="addVipByopenid" >
+         insert into vip_list(vip_id,openid,vip_name,vip_money,hotel_id,hotel_name)
+          values(#{vip_id},#{openid},'尊贵的会员',0,1001,'woolls')
+     </insert>
+
+    <update id="updateVipmsg" >
+         update vip_list set vip_name=#{vip_name},vip_tel=#{vip_tel},vip_IDcard=#{vip_IDcard}
+          where vip_id=#{vip_id}
+     </update>
+
+
+    <select id="findAll"  resultType="com.pojo.Vip">
+        select vip_id,openid,vip_tel,vip_name,vip_IDcard,vip_money,vip_time,hotel_id,hotel_name,level_id,level_num
+        from vip_list
+
+    </select>
+
+    <select id="count" parameterType="int" resultType="int">
+        SELECT COUNT(*) from vip_list
+    </select>
+
+    <delete id="deleteVip" >
+        delete from vip_list
+        where vip_id = #{vip_id}
+    </delete>
+
+    <select id="countByVip_id" parameterType="String" resultType="int">
+        SELECT COUNT(*) from vip_list
+        where vip_id=#{vip_id}
+    </select>
+
+    <select id="countByVip_tel" resultType="int">
+        SELECT COUNT(*) from vip_list
+        where vip_tel=#{vip_tel} and hotel_id=#{hotel_id}
+    </select>
+
+    <update id="updateVip_money" >
+         update vip_list set vip_money=#{vip_money},level_id=#{level_id},level_num=#{level_num}
+          where vip_id=#{vip_id}
+     </update>
+
+    <!-- 通过条件分页查询，返回数据集 -->
+    <select id="selectPageList" parameterType="com.util.Page" resultType="com.pojo.Vip">
+        select
+        vip_id,openid,vip_tel,vip_name,vip_IDcard,vip_money,vip_time,hotel_id,hotel_name,level_num
+        from vip_list
+        <where>
+            <if test="keyWord!='' and keyType=='vip_tel' ">
+                AND vip_tel like '%' #{keyWord} '%'
+            </if>
+            <if test="keyWord!='' and keyType=='vip_name' ">
+                AND vip_name like '%' #{keyWord} '%'
+            </if>
+
+        </where>
+        order by vip_time DESC
+        limit #{start},#{rows}
+    </select>
+
+    <!-- 通过条件分页查询，返回总记录数 -->
+    <select id="selectPageCount" parameterType="com.util.Page"  resultType="Integer">
+
+    select count(*) from vip_list
+    <where>
+
+        <if test="keyWord!='' and keyType=='vip_tel' ">
+            AND vip_tel like '%' #{keyWord} '%'
+        </if>
+        <if test="keyWord!='' and keyType=='vip_name' ">
+            AND vip_name like '%' #{keyWord} '%'
+        </if>
+    </where>
+    </select>
+
+
+
+
+</mapper>
