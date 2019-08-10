@@ -86,7 +86,6 @@
                 var jsondata = JSON.parse(data);
                 code1 =jsondata.code;
                 status=jsondata.status;
-                alert(code1);
             }
         });
 
