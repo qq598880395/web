@@ -124,7 +124,6 @@
             type : "post",
             datatype:"json",
             success : function(data) {
-                console.log(data);
                 var jsondata = JSON.parse(data);
                 $("#preview").attr("src",getRootPath()+jsondata.page_src)
             }

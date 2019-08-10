@@ -21,6 +21,7 @@
 	<!-- 映射文件 -->
 	<mappers>
 	    <mapper resource="com.wools.mapper/PageMapper.xml"/>
+		<mapper resource="com.wools.mapper/ArticleMapper.xml"/>
 	</mappers>
 	
 </configuration>

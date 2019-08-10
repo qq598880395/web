@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.ArticleDAO">
+
+    <resultMap id="ArticleMapper" type="com.pojo.Article">
+        <id column="article_id" property="article_id"/>
+        <result column="article_title" property="article_title" />
+        <result column="article_text" property="article_text" />
+        <result column="article_time" property="article_time" />
+        <result column="img_id" property="img_id" />
+    </resultMap>
+
+    <select id="getAllArticle" resultMap="ArticleMapper" parameterType="Integer">
+        select article_id,article_title,article_text,article_time,article.img_id from img,article where  article.img_id=img.img_id and template_id=2 limit #{arg0},#{arg1};
+    </select>
+
+    <select id="getArticleCount" resultType="int">
+        select COUNT(article_id) from article ,img where article.img_id = img.img_id
+    </select>
+</mapper>

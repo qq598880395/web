@@ -8,6 +8,7 @@ import com.pojo.Img;
 import com.service.ArticleService;
 import com.service.ImgService;
 import com.service.PageService;
+import com.vo.ArticleVO;
 import com.vo.ImgHrefVo;
 import com.vo.PageVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +41,7 @@ public class UpLoadAction {
     private String uploadPath = System.getProperty("ROOT") + "/img/lunbo"; // 上传轮播图片的目录
     private String uploadMod = System.getProperty("ROOT") + "/img/modnav"; // 上传mod图片的目录
     private String ArticleImgPath = System.getProperty("ROOT") + "/img/article"; // 上传图片的目录
+
 
 
     @RequestMapping("/uploadImage")
@@ -176,7 +179,7 @@ public class UpLoadAction {
         }
         pageService.updataPage(page_name);
         com.alibaba.fastjson.JSONObject json = new com.alibaba.fastjson.JSONObject();
-        json.put("code", 200);
+        json.put("code", 0);
         json.put("msg", "success");
         json.put("url", "/page/" + pageName + ".html");
         return json.toString();
@@ -184,58 +187,62 @@ public class UpLoadAction {
     }
 
     //上传文章模板图片
-    @ResponseBody
     @RequestMapping(value = "/uploadArticle")
-    public JSONObject uploadArticle(@RequestParam("file") MultipartFile file, String title, String text) {
-
+    public String uploadArticle(@RequestParam("title")String title ,@RequestParam("textarea")String textarea, String imgsrc,String file) {
+        System.out.println(title);
+        System.out.println(textarea);
+        System.out.println(imgsrc);
+        Date date =new Date();
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         JSONObject res = new JSONObject();
         JSONObject resUrl = new JSONObject();
-        if (file.isEmpty()==false && text.length()!=0 && title.length()!=0 || title.length()<=20 ) {
-            try {
-                //得到旧文件名
-                String oldFileName = file.getOriginalFilename();
-                //得到后缀名
-                int index = oldFileName.lastIndexOf(".");
-                String extName = oldFileName.substring(index);
-                //新文件名
-                String newFileName = System.nanoTime() + extName;
-                File savePathFile = new File(ArticleImgPath);
-                if (savePathFile.exists() == false) {
-                    savePathFile.mkdirs();
-                }
-                BufferedOutputStream out = new BufferedOutputStream(
-                        new FileOutputStream(new File(ArticleImgPath, newFileName)));
-                out.write(file.getBytes());
-                int n = imgService.addImage(newFileName, "img/article/" + newFileName, 2, null);
-                List<Img> artimg_list = imgService.searchImgById(2, "yes", "img/article/" + newFileName);
-                if (artimg_list != null && artimg_list.size() > 0) {
-                    Integer id = artimg_list.get(0).getImg_id();
-                    int n1 = articleService.addArticle(title, text, id);
-                }
-                System.out.println(n);
-                out.flush();
-                out.close();
-            } catch (IOException e) {
-                res.put("code", 1);
-                res.put("msg", "上传出错");
-                res.put("data", resUrl);
-                return res;
-            }
-            res.put("code", 0);
-            res.put("msg", "上传成功");
-            res.put("data", resUrl);
-            return res;
-        } else {
-            res.put("code", 2);
-            res.put("msg", "上传为空");
-            res.put("data", resUrl);
-            return res;
+        int n = imgService.addImage(imgsrc, "img/article/" + imgsrc, 2, null);
+        List<Img> artimg_list = imgService.searchImgById(2, "yes", "img/article/" + imgsrc);
+        if (artimg_list != null && artimg_list.size() > 0) {
+            Integer id = artimg_list.get(0).getImg_id();
+            int n1 = articleService.addArticle(title, textarea, id,format.format(date).toString());
         }
-
-
+        res.put("code",0);
+        res.put("msg","表单上传成功");
+        res.put("data",resUrl);
+        return res.toString();
     }
 
-
+    //得到文件存储目录
+    @ResponseBody
+    @RequestMapping(value = "/getImgUrl")
+    public JSONObject getImgUrl(@RequestParam("file") MultipartFile file){
+        JSONObject res = new JSONObject();
+        JSONObject resUrl = new JSONObject();
+        try {
+            //得到旧文件名
+            String oldFileName = file.getOriginalFilename();
+            //得到后缀名
+            int index = oldFileName.lastIndexOf(".");
+            String extName = oldFileName.substring(index);
+            //新文件名
+            String newFileName = System.nanoTime() + extName;
+            resUrl.put("img_src",newFileName);
+            File savePathFile = new File(ArticleImgPath);
+            if (savePathFile.exists() == false) {
+                savePathFile.mkdirs();
+            }
+            BufferedOutputStream out = new BufferedOutputStream(
+                    new FileOutputStream(new File(ArticleImgPath, newFileName)));
+            out.write(file.getBytes());
+            out.flush();
+            out.close();
+    }catch (IOException e){
+        res.put("code", 1);
+        res.put("msg", "上传出错");
+        res.put("data", resUrl);
+        return res;
+    }
+        res.put("code", 0);
+        res.put("msg", "上传成功");
+        res.put("data", resUrl);
+        return res;
+    }
 
 
     //根据字段判断是否存在

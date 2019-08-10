@@ -47,15 +47,14 @@
         <legend>卡片文章编辑上传</legend>
         <div class="layui-field-box">
             <div class="article-upload">
-                <form class="layui-form" action="">
+                <form class="layui-form"  action="upload/uploadArticle"  method="get" >
                     <div class="layui-fluid">
-                        <div class="layui-row">
+                        <div class="layui-row" >
                             <div class="layui-col-xs4">
-
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">文章标题</label>
                                     <div class="layui-input-inline">
-                                        <input type="text" id="form-title" name="title" lay-verify="title"
+                                        <input type="text" id="form-title" name="title" lay-verify=""
                                                autocomplete="off" placeholder="请输入标题" class="layui-input">
                                     </div>
                                 </div>
@@ -68,11 +67,14 @@
                                             <i class="layui-icon">&#xe67c;</i>上传图片
                                         </button>
                                         <div class="layui-upload-list">
-                                            <img class="layui-upload-img" id="form-img" style="width: 100px;height: 100px">
-                                            <input type="hidden" name="article_img" id="hidden-img">
+                                            <img class="layui-upload-img" id="form-img"
+                                                 style="width: 100px;height: 100px">
                                             <p id="demoText"></p>
                                         </div>
+                                        <!--一个隐藏表单控件 -->
+                                        <input type="hidden" id="imgsrctag" name="imgsrc">
                                     </div>
+
                                 </div>
 
                             </div>
@@ -80,7 +82,8 @@
                                 <div class="layui-form-item layui-form-text">
                                     <label class="layui-form-label">文章内容</label>
                                     <div class="layui-input-block">
-                                        <textarea placeholder="请输入内容" name="textarea" lay-verify="required" class="layui-textarea"></textarea>
+                                        <textarea placeholder="请输入内容" name="textarea" id="form-text" lay-verify="required"
+                                                  class="layui-textarea"></textarea>
                                     </div>
                                 </div>
 
@@ -92,7 +95,8 @@
 
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <button class="layui-btn" id="form-submit" lay-submit="" lay-filter="demo1">立即提交</button>
+                            <button class="layui-btn" id="form-submit" layui-submit="" lay-filter="xxx">立即提交</button>
+                            <!--<button class="layui-btn" id="hidden-submit" layui-submit=""></button>-->
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
@@ -101,6 +105,13 @@
                 </form>
             </div>
         </div>
+    </fieldset>
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>文章编辑</legend>
+        <div class="layui-btn-group demoTable">
+            <button class="layui-btn" data-type="isAll" >一键删除</button>
+        </div>
+        <table id="UploadedArticle" lay-filter="allArticle"></table>
     </fieldset>
 </div>
 
@@ -115,6 +126,12 @@
     <a class="layui-btn layui-btn-xs yes" lay-event="yes">轮播显示</a>
     {{#  } }}
 
+</script>
+
+<script type="text/html" id="Article_bar">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="preview_art">预览</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit_art">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del_art">删除</a>
 </script>
 
 <script>
@@ -151,6 +168,32 @@
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
             ]]
         });
+
+        //表格查询文章
+        var tableArt =table.render({
+            elem:'#UploadedArticle',
+            height: "312px",
+            url: getRootPath() + '/html/searchArticle', //数据接口
+            page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                , groups: 3 //只显示 1 个连续页码
+                , first: "首页" //不显示首页
+                , last: "尾页" //不显示尾页
+            }
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，
+            ,limit: 5
+            ,limits:[5,10,15]
+            ,id:"#UploadedArticle"
+            ,cols: [[
+                {type:'checkbox',fixed: 'left'}
+                ,{field: 'article_id', title: 'ID',sort: true}
+                ,{field: 'article_title', title: '文章标题'}
+                ,{field: 'article_time', title: '上传时间'}
+                ,{field: 'img_status', title: '是否显示'}
+                ,{fixed: 'right', title:'操作', toolbar: '#Article_bar'}
+            ]]
+        })
 
         //一键删除实现
         var $ = layui.$, active = {
@@ -190,7 +233,7 @@
             active[type] ? active[type].call(this) : '';
         });
 
-        //监听行工具事件
+        //轮播监听行工具事件
         table.on('tool(test)', function (obj) {
             var data = obj.data;
             //console.log(obj)
@@ -270,6 +313,7 @@
         });
 
 
+
         //图片预览
         var demoListView = $('#demoList'),
             uploadListIns = upload.render({
@@ -344,52 +388,125 @@
          */
         var formImg = upload.render({
             elem: '#test1',
-            type:'post',
-            auto: false,
-            bindAction: '#form-submit',
+            type: 'post',
+            auto: true,
             accept: 'images',
-            data: {
-                title: '',
-                text: ''
-            },
-            url: getRootPath() + '/upload/uploadArticle',
+            //data: {
+                // title: '',
+                // text: ''
+            //},
+            url: getRootPath() + '/upload/getImgUrl',
             before: function (obj) {
-                //表单验证
-                form.verify({
-                    title:function (value) {
-                        if(value.length==0){
-                            return '文章标题不能为空';
-                            this.error(index, upload);
-                        }else if(value.length>20){
-                            return '文章标题不能超过20个字';
-                        }
-                    }
-                });
-                var title = $('#form-title').val();
-                var text = $('.layui-textarea').val();
-                this.data.title = title;
-                this.data.text = text;
-                alert(JSON.stringify(this.data));
+                // var title = $('#form-title').val();
+                // var text = $('.layui-textarea').val();
+                // this.data.title = title;
+                // this.data.text = text;
+                // alert(JSON.stringify(this.data));
             },
             choose: function (obj) {
                 obj.preview(function (index, file, result) {
                     $('#form-img').attr('src', result);
-                    $('#hidden-img').attr('name', result);
+                    //$('#hidden-img').attr('name', result);
                 })
             },
             done: function (res, index, upload) {
-                if (res.code=="0") {
+                if (res.code == "0") {
                     alert("上传成功");
+                    alert(JSON.stringify(res.data.img_src));
+                    $('#imgsrctag').val(JSON.stringify(res.data.img_src))
                 }
             },
-            error: function (index,upload) {
+            error: function (index, upload) {
                 alert("上传失败null");
             }
         });
+        table.on('tool(Article_bar)',function (obj) {
+            var data =obj.data;
+            if (obj.event=="del_art") {
+                layer.confirm('真的删除行么', function (index) {
+                    obj.del();
+                    layer.close(index);
+                    //后台操作
+                    $.ajax({
+                        url: getRootPath() + "/html/delArticle",
+                        type: "get",
+                        data: {"article_id": data.article_id, "img_id": data.img_id},
+                        datatype: "json",
+                        success: function (data) {
+                            tableArt.reload({})
+                        }
+                    });
+
+                });
+            }
+        })
+
+/*
+        $("#form-submit").on("click",function () {
+            var title =$("#form-title").val();
+            var textarea =$("#form-text").val();
+            var imgsrc =$("#form-img").val();
+            $.ajax({
+                url:getRootPath()+"/upload/uploadArticle",
+                type:"get",
+                data:{
+                    "title":title,
+                    "imgsrc":imgsrc,
+                    "textarea":textarea
+                },
+                success:function (res) {
+                    alert(res);
+                },
+                error:function(error){
+                    console.log(error)
+                }
+        });
+        });*/
+        form.on('submit(xxx)', function(data){
+            layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            })
+            return false;
+        });
+        /*
+        form.on('submit(add)',function (data) {
+            layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            });
+              $.ajax({
+                  url:getRootPath()+"upload/uploadArticle",
+                  type:"get",
+                  data:{
+                    "title":data.field.title,
+                      "imgsrc":data.field.imgsrc,
+                      "textarea":data.field.textarea
+                  },
+                  success:function (res) {
+                      alert(res);
+                  },
+                  error:function(error){
+                      console.log(error)
+                  }
+              });
+             return false;
+         });*/
+        //表单验证
+        // $("#form-submit").on('click',function () {
+        // })
 
 
-
-
+        /*
+        form.verify({
+            title: function (value) {
+                if (value.length == 0) {
+                    //$("#hidden-submit").trigger('click');
+                    return '文章标题不能为空';
+                } else if (value.length > 20) {
+                    return '文章标题不能超过20个字';
+                }
+            }
+        });
+        */
     });
 
 
