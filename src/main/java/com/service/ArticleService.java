@@ -59,7 +59,7 @@ public class ArticleService {
         }
         //Page p = new Page(page,limit);
         //qw.last("limit"+page+","+limit);
-        List<Article> articleList =articleDAO.getAllArticle((page-1)*limit,page*limit+1);
+        List<Article> articleList =articleDAO.getAllArticle((page-1)*limit,page*limit);
         return articleList;
     }
     //得到文章的总数
@@ -79,4 +79,5 @@ public class ArticleService {
         int n=imgDAO.delete(imgQw);
         return Art_n;
     }
+
 }

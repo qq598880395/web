@@ -10,7 +10,7 @@
 <div>
     <h2>已上传的轮播图片</h2>
     <div class="layui-btn-group demoTable">
-        <button class="layui-btn" data-type="isAll" >一键删除</button>
+        <button class="layui-btn" data-type="isAll">一键删除</button>
     </div>
     <table id="UploadedLunboImg" lay-filter="test"></table>
 
@@ -47,9 +47,9 @@
         <legend>卡片文章编辑上传</legend>
         <div class="layui-field-box">
             <div class="article-upload">
-                <form class="layui-form"  action="upload/uploadArticle"  method="get" >
+                <form class="layui-form" action="upload/uploadArticle" method="get">
                     <div class="layui-fluid">
-                        <div class="layui-row" >
+                        <div class="layui-row">
                             <div class="layui-col-xs4">
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">文章标题</label>
@@ -82,7 +82,8 @@
                                 <div class="layui-form-item layui-form-text">
                                     <label class="layui-form-label">文章内容</label>
                                     <div class="layui-input-block">
-                                        <textarea placeholder="请输入内容" name="textarea" id="form-text" lay-verify="required"
+                                        <textarea placeholder="请输入内容" name="textarea" id="form-text"
+                                                  lay-verify="required"
                                                   class="layui-textarea"></textarea>
                                     </div>
                                 </div>
@@ -109,7 +110,8 @@
     <fieldset class="layui-elem-field layui-field-title">
         <legend>文章编辑</legend>
         <div class="layui-btn-group demoTable">
-            <button class="layui-btn" data-type="isAll" >一键删除</button>
+            <button class="layui-btn" data-type="isAll">一键删除</button>
+            <button class="layui-btn" >新增文章</button>
         </div>
         <table id="UploadedArticle" lay-filter="allArticle"></table>
     </fieldset>
@@ -155,23 +157,23 @@
                 , first: "首页" //不显示首页
                 , last: "尾页" //不显示尾页
             }
-            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，
-            ,limit: 5
-            ,limits:[5,10,15]
-            ,id:"#UploadedLunboImg"
-            ,cols: [[
-                 {type:'checkbox',fixed: 'left'}
-                ,{field: 'img_id', title: 'ID',sort: true}
-                ,{field: 'img_name', title: '图片名'}
-                ,{field: 'img_href', title: '图片对应链接'}
-                ,{field: 'img_status', title: '是否显示'}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
+            , cellMinWidth: 80 //全局定义常规单元格的最小宽度，
+            , limit: 5
+            , limits: [5, 10, 15]
+            , id: "#UploadedLunboImg"
+            , cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'img_id', title: 'ID', sort: true}
+                , {field: 'img_name', title: '图片名'}
+                , {field: 'img_href', title: '图片对应链接'}
+                , {field: 'img_status', title: '是否显示'}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo'}
             ]]
         });
 
         //表格查询文章
-        var tableArt =table.render({
-            elem:'#UploadedArticle',
+        var tableArt = table.render({
+            elem: '#UploadedArticle',
             height: "312px",
             url: getRootPath() + '/html/searchArticle', //数据接口
             page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
@@ -181,46 +183,46 @@
                 , first: "首页" //不显示首页
                 , last: "尾页" //不显示尾页
             }
-            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，
-            ,limit: 5
-            ,limits:[5,10,15]
-            ,id:"#UploadedArticle"
-            ,cols: [[
-                {type:'checkbox',fixed: 'left'}
-                ,{field: 'article_id', title: 'ID',sort: true}
-                ,{field: 'article_title', title: '文章标题'}
-                ,{field: 'article_time', title: '上传时间'}
-                ,{field: 'img_status', title: '是否显示'}
-                ,{fixed: 'right', title:'操作', toolbar: '#Article_bar'}
+            , cellMinWidth: 80 //全局定义常规单元格的最小宽度，
+            , limit: 5
+            , limits: [5, 10, 15]
+            , id: "#UploadedArticle"
+            , cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'article_id', title: 'ID', sort: true}
+                , {field: 'article_title', title: '文章标题'}
+                , {field: 'article_time', title: '上传时间'}
+                , {field: 'img_status', title: '是否显示'}
+                , {fixed: 'right', title: '操作', toolbar: '#Article_bar'}
             ]]
         })
 
         //一键删除实现
         var $ = layui.$, active = {
-            isAll: function(){
+            isAll: function () {
                 var checkStatus = table.checkStatus('#UploadedLunboImg')
-                    ,data = checkStatus.data;
+                    , data = checkStatus.data;
                 if (data == '')
                     layer.msg('请先选择要删除的数据');
-                if (data != ''){
+                if (data != '') {
                     var map = [];
-                    for (var i=0;i<data.length;i++){
-                        map.push({"img_id":data[i].img_id,"img_src":data[i].img_src});
+                    for (var i = 0; i < data.length; i++) {
+                        map.push({"img_id": data[i].img_id, "img_src": data[i].img_src});
                     }
                     var imgJson = JSON.stringify(map)
-                   // 后台操作
-                    layer.confirm("您确定要删除吗？",function(){
+                    // 后台操作
+                    layer.confirm("您确定要删除吗？", function () {
                         $.ajax({
-                            type:"post",
-                            url: getRootPath()+'/html/delMostImg',
-                            data:{params:imgJson} ,
-                            success:function (data) {
+                            type: "post",
+                            url: getRootPath() + '/html/delMostImg',
+                            data: {params: imgJson},
+                            success: function (data) {
                                 layer.closeAll('loading');
-                                if(data == 1){
-                                    parent.layer.msg('删除成功！', {icon: 1,time:2000,shade:0.2});
+                                if (data == 1) {
+                                    parent.layer.msg('删除成功！', {icon: 1, time: 2000, shade: 0.2});
                                     location.reload(true);
-                                }else{
-                                    parent.layer.msg('删除失败！', {icon: 2,time:3000,shade:0.2});
+                                } else {
+                                    parent.layer.msg('删除失败！', {icon: 2, time: 3000, shade: 0.2});
                                 }
                             }
                         })
@@ -228,7 +230,7 @@
                 }
             }
         };
-        $('.demoTable .layui-btn').on('click', function(){
+        $('.demoTable .layui-btn').on('click', function () {
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });
@@ -300,18 +302,19 @@
                     }
                 });
             } else if (obj.event === 'preview') {
+                //<img width="400px" src="' + getRootPath() + "/" + data.img_src + '" />
                 layer.open({
                     type: 1,
-                    skin: 'layui-layer-demo', //样式类名
+                    skin: 'layui-layer-rim', //样式类名
                     closeBtn: 0, //不显示关闭按钮
+                    area: ['420px', '240px'],
                     offset: '50px',
                     anim: 2,
                     shadeClose: true, //开启遮罩关闭
-                    content: '<img width="400px" src="' + getRootPath() + "/" + data.img_src + '" />'
+                    content: '<img width="400px" src="\' + getRootPath() + "/" + data.img_src + \'" />'
                 });
             }
         });
-
 
 
         //图片预览
@@ -392,8 +395,8 @@
             auto: true,
             accept: 'images',
             //data: {
-                // title: '',
-                // text: ''
+            // title: '',
+            // text: ''
             //},
             url: getRootPath() + '/upload/getImgUrl',
             before: function (obj) {
@@ -420,9 +423,11 @@
                 alert("上传失败null");
             }
         });
-        table.on('tool(Article_bar)',function (obj) {
-            var data =obj.data;
-            if (obj.event=="del_art") {
+
+        table.on('tool(allArticle)', function (obj) {
+            var data = obj.data;
+            console.log(data)
+            if (obj.event === "del_art") {
                 layer.confirm('真的删除行么', function (index) {
                     obj.del();
                     layer.close(index);
@@ -438,31 +443,71 @@
                     });
 
                 });
-            }
-        })
+            } else if (obj.event === 'edit_art') {
+                layer.prompt({
+                    title: "输入跳转链接,外网链接以 https:// 开头"
+                    , formType: 3
+                    , value: data.img_href
+                }, function (value, index) {
+                    obj.update({
+                        img_href: value
+                    });
+                    layer.close(index);
+                    //后台操作
+                    $.ajax({
+                        url: getRootPath() + "/html/updataImg_href",
+                        type: "get",
+                        data: {"img_href": value, "img_id": data.img_id},
+                        success: function () {
+                        }
+                    });
+                });
+            } else if (obj.event === 'preview_art') {
+                layer.open({
+                    type: 2,
+                    title:"卡片文章预览",
+                    skin: 'layui-layer-lan', //样式类名
+                    closeBtn: 0, //不显示关闭按钮
+                    anim: 2,
+                    shadeClose: true, //开启遮罩关闭
+                    content: ['template/article_item.html','no'],
+                    area: ['700px','50%'],
+                    success: function(layero, index) {
 
-/*
-        $("#form-submit").on("click",function () {
-            var title =$("#form-title").val();
-            var textarea =$("#form-text").val();
-            var imgsrc =$("#form-img").val();
-            $.ajax({
-                url:getRootPath()+"/upload/uploadArticle",
-                type:"get",
-                data:{
-                    "title":title,
-                    "imgsrc":imgsrc,
-                    "textarea":textarea
-                },
-                success:function (res) {
-                    alert(res);
-                },
-                error:function(error){
-                    console.log(error)
-                }
-        });
-        });*/
-        form.on('submit(xxx)', function(data){
+                        var cardhead = layer.getChildFrame('#cardhead', index);
+                        var cardimg = layer.getChildFrame('.article-img', index);
+                        var cardtext = layer.getChildFrame('.article-text', index);
+                        var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+                        cardhead.html(data.article_title);
+                        cardimg.attr("src", "../" + data.img_src);
+                        cardtext.text(data.article_text);
+                    }
+                });
+            }
+        }),
+
+        /*
+                $("#form-submit").on("click",function () {
+                    var title =$("#form-title").val();
+                    var textarea =$("#form-text").val();
+                    var imgsrc =$("#form-img").val();
+                    $.ajax({
+                        url:getRootPath()+"/upload/uploadArticle",
+                        type:"get",
+                        data:{
+                            "title":title,
+                            "imgsrc":imgsrc,
+                            "textarea":textarea
+                        },
+                        success:function (res) {
+                            alert(res);
+                        },
+                        error:function(error){
+                            console.log(error)
+                        }
+                });
+                });*/
+        form.on('submit(xxx)', function (data) {
             layer.alert(JSON.stringify(data.field), {
                 title: '最终的提交信息'
             })
@@ -529,4 +574,5 @@
 
 
 </body>
+
 </html>

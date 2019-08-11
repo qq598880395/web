@@ -196,8 +196,10 @@ public class UpLoadAction {
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         JSONObject res = new JSONObject();
         JSONObject resUrl = new JSONObject();
-        int n = imgService.addImage(imgsrc, "img/article/" + imgsrc, 2, null);
-        List<Img> artimg_list = imgService.searchImgById(2, "yes", "img/article/" + imgsrc);
+        String changeImgSrc =imgsrc.replace('"',' ').trim();
+        int n = imgService.addImage(changeImgSrc, "img/article/" +changeImgSrc, 2, null);
+
+        List<Img> artimg_list = imgService.searchImgById(2, "yes", "img/article/" + changeImgSrc);
         if (artimg_list != null && artimg_list.size() > 0) {
             Integer id = artimg_list.get(0).getImg_id();
             int n1 = articleService.addArticle(title, textarea, id,format.format(date).toString());

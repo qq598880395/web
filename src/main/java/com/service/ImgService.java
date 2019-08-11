@@ -98,5 +98,12 @@ public class ImgService {
         }
         return n;
   }
+    //根据文章传来的图片id查图片路径
+    public Img searchArtImgById(Integer img_id){
+        QueryWrapper qw =new QueryWrapper();
+        qw.eq("img_id",img_id);
+        Img img =imgDAO.selectOne(qw);
+        return img;
+    }
 
 }

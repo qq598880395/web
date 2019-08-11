@@ -4,6 +4,7 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.dao.ImgDAO;
 import com.pojo.Article;
 import com.pojo.Img;
 import com.pojo.Page;
@@ -199,6 +200,8 @@ public class HtmlAction {
                 jsonItem.put("article_text",x.getArticle_text());
                 jsonItem.put("article_time",x.getArticle_time());
                 jsonItem.put("img_id",x.getImg_id());
+                String img_src =imgService.searchArtImgById(x.getImg_id()).getImg_src();
+                jsonItem.put("img_src", img_src);
                 jsonArray2.add(jsonItem);
             }
         }

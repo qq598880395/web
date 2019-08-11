@@ -6,7 +6,7 @@
                 <div class="layui-row article-row layui-col-space10">
                     <div class="layui-col-xs4">
                         <div>
-                            <img src="img/9788985df6292e6297af223b28dbd0b61525f5a1.jpg" class="article-img">
+                            <img src="" class="article-img">
                         </div>
                     </div>
                     <div class="layui-col-xs8 ">
@@ -23,7 +23,7 @@
                     <div class="layui-row article-row layui-col-space10">
                         <div class="layui-col-xs4">
                             <div>
-                                <img src="img/9788985df6292e6297af223b28dbd0b61525f5a1.jpg" class="article-img">
+                                <img src="" class="article-img">
                             </div>
                         </div>
                         <div class="layui-col-xs8 ">
@@ -66,17 +66,18 @@
             var subStr = str.substring(0, 60);
             $(this).html(subStr + (str.length > 10 ? '...' + "<a href='#' class='active'>查看更多</a>" : ''));
         });
+
             //取得简介图片
             $.ajax({
-                url: getRootPath()+'/html/searchNowImg',
-                data:{template_id:1},
+                url: getRootPath()+'/html/searchImgs',
+                data:{template_id:2},
                 type: "get",
                 datatype:"json",
                 success:function (data) {
                     var jsonobj =JSON.parse(data);
                     var i=0;
                     $('.article-img').each(function () {
-                        $(this).attr("src",getRootPath()+'/'+jsonobj[i].img_src);
+                        $(this).attr("src",jsonobj[i].img_src.toString());
                         i++;
                     });
         }
