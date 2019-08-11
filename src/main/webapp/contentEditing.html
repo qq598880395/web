@@ -47,7 +47,7 @@
         <legend>卡片文章编辑上传</legend>
         <div class="layui-field-box">
             <div class="article-upload">
-                <form class="layui-form" action="upload/uploadArticle" method="get">
+                <form class="layui-form" method="post">
                     <div class="layui-fluid">
                         <div class="layui-row">
                             <div class="layui-col-xs4">
@@ -72,7 +72,7 @@
                                             <p id="demoText"></p>
                                         </div>
                                         <!--一个隐藏表单控件 -->
-                                        <input type="hidden" id="imgsrctag" name="imgsrc">
+                                        <input type="text" style="display: none" id="imgsrctag" name="imgsrc">
                                     </div>
 
                                 </div>
@@ -415,8 +415,8 @@
             done: function (res, index, upload) {
                 if (res.code == "0") {
                     alert("上传成功");
-                    alert(JSON.stringify(res.data.img_src));
-                    $('#imgsrctag').val(JSON.stringify(res.data.img_src))
+                    alert(res.data.img_src);
+                    $('#imgsrctag').val(res.data.img_src)
                 }
             },
             error: function (index, upload) {
@@ -486,11 +486,11 @@
             }
         }),
 
-        /*
                 $("#form-submit").on("click",function () {
                     var title =$("#form-title").val();
                     var textarea =$("#form-text").val();
-                    var imgsrc =$("#form-img").val();
+                    var imgsrc =$("#imgsrctag").val();
+                    alert(imgsrc)
                     $.ajax({
                         url:getRootPath()+"/upload/uploadArticle",
                         type:"get",
@@ -506,7 +506,7 @@
                             console.log(error)
                         }
                 });
-                });*/
+                });
         form.on('submit(xxx)', function (data) {
             layer.alert(JSON.stringify(data.field), {
                 title: '最终的提交信息'
