@@ -11,4 +11,5 @@ public interface ArticleDAO extends BaseMapper<Article> {
 
     public List<Article> getAllArticle(Integer page,Integer limit);
     public int getArticleCount();
+    public List<Article> searchAllArticle();
 }

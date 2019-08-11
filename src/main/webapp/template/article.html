@@ -1,40 +1,4 @@
-<div class="layui-fluid">
-    <div class="layui-card">
-        <div class="layui-card-header">酒店介绍</div>
-        <div class="layui-card-body">
-            <div class="layui-fluid">
-                <div class="layui-row article-row layui-col-space10">
-                    <div class="layui-col-xs4">
-                        <div>
-                            <img src="" class="article-img">
-                        </div>
-                    </div>
-                    <div class="layui-col-xs8 ">
-                        <div class="article-text"><p>雷锋把实现崇高的理想落实到本职岗位上，说到做到，表里如一。他坚持理想与现实相一致，决心为共产主义奋斗终身，甘愿做一颗永不生锈的“螺丝钉”，干一行，爱一行，钻一行；他注意理论联系实际，对自己政治上要求严格，自觉经受思想锻炼，在艰苦卓绝的战斗中提升自己，逐步成长为一名具有高度共产主义觉悟和道德修养的战士。</p></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="layui-card ">
-            <div class="layui-card-header">酒店介绍</div>
-            <div class="layui-card-body">
-                <div class="layui-fluid">
-                    <div class="layui-row article-row layui-col-space10">
-                        <div class="layui-col-xs4">
-                            <div>
-                                <img src="" class="article-img">
-                            </div>
-                        </div>
-                        <div class="layui-col-xs8 ">
-                            <div class="article-text"><p>雷锋把实现崇高的理想落实到本职岗位上，说到做到，表里如一。他坚持理想与现实相一致，决心为共产主义奋斗终身，甘愿做一颗永不生锈的“螺丝钉”，干一行，爱一行，钻一行；他注意理论联系实际，对自己政治上要求严格，自觉经受思想锻炼，在艰苦卓绝的战斗中提升自己，逐步成长为一名具有高度共产主义觉悟和道德修养的战士。</p></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<div class="layui-fluid" id="article_box"></div>
     <script>
         var getRootPath = function() {
             // http://localhost:8083/uimcardprj/share/meun.jsp
@@ -69,19 +33,59 @@
 
             //取得简介图片
             $.ajax({
-                url: getRootPath()+'/html/searchImgs',
-                data:{template_id:2},
+                url: getRootPath()+'/html/searchArticle',
+                data:{page:0,limit:0},
                 type: "get",
                 datatype:"json",
                 success:function (data) {
-                    var jsonobj =JSON.parse(data);
-                    var i=0;
-                    $('.article-img').each(function () {
-                        $(this).attr("src",jsonobj[i].img_src.toString());
-                        i++;
-                    });
-        }
-        })
+                    alert(data);
+                    //var jsonarray= $.parseJSON(data);
+                    //var jsonobj =JSON.parse(data);
+                    var count =data.data.length;
+                    alert(count);
+
+                     if (count>0){
+                         for (var n=0;n<count;n++){
+                             // $("#article_box").append(item);
+                             // $('.article-img').each(function () {
+                             //     $(this).attr("src",getRootPath()+"/"+data.data[n].img_src.toString());
+                             // });
+                             var item =$('<div class="layui-card" id="article_item">\n' +
+                                 '        <div class="layui-card-header">'+data.data[n].article_title+'</div>\n' +
+                                 '        <div class="layui-card-body">\n' +
+                                 '            <div class="layui-fluid">\n' +
+                                 '                <div class="layui-row article-row layui-col-space10">\n' +
+                                 '                    <div class="layui-col-xs4">\n' +
+                                 '                        <div>\n' +
+                                 '                            <img id="cardimg-'+n+'" src="'+getRootPath()+"/"+data.data[n].img_src.toString()+'" class="article-img">\n' +
+                                 '                        </div>\n' +
+                                 '                    </div>\n' +
+                                 '                    <div class="layui-col-xs8 ">\n' +
+                                 '                        <div class="article-text" ><p>'+data.data[n].article_text+'</p></div>\n' +
+                                 '                    </div>\n' +
+                                 '                </div>\n' +
+                                 '            </div>\n' +
+                                 '        </div>\n' +
+                                 '    </div>');
+                              // $("#cardhead-"+n+"").text(data.data[n].article_title);
+                              // $("#cardimg-"+n+"").attr("src",getRootPath()+"/"+data.data[n].img_src.toString());
+                              // $(".article-"+n+"").text(data.data[n].article_text);
+                             $("#article_box").append(item);
+                         }
+                     }
+                     // var i=0;
+                     //
+                     // $('.layui-card-header').each(function () {
+                     //     $(this).text(data.data[i].article_title)
+                     //     i++;
+                     // });
+                     // $('.article-text').each(function () {
+                     //     $(this).text(data.data[i].article_text)
+                     //     i++;
+                     // });
+            }
+            })
+
 
 
     </script>
