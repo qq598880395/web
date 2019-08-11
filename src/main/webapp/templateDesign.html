@@ -63,6 +63,8 @@
                 var ifmObj = obj.document.getElementById("html").innerHTML;
                 document.getElementById("viewht").innerHTML = ifmObj;
                 $(".control").attr("style","display:none");
+                $(".need_show").show();
+                $("#show_map").attr("style","height:30px")
                 $(".carousel-img").remove();
                 var htmltext = $("#viewht").html();
 
