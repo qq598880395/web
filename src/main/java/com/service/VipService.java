@@ -98,7 +98,7 @@ public class VipService {
     }
 
     public List<Vip> selectPageList(com.util.Page page) {
-        List<Vip>list=vipDAO.selectPageList(page);
+        List<Vip> list = vipDAO.selectPageList(page);
         return list;
     }
 
@@ -107,7 +107,7 @@ public class VipService {
         return vipDAO.selectPageCount(page);
     }
     public List<Recharge> selectPageList1(com.util.Page page) {
-        List<Recharge>list=rechargeDAO.selectPageList(page);
+        List<Recharge> list = rechargeDAO.selectPageList(page);
         return list;
     }
 

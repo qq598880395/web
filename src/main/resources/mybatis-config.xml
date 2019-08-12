@@ -22,6 +22,10 @@
 	<mappers>
 	    <mapper resource="com.wools.mapper/PageMapper.xml"/>
 		<mapper resource="com.wools.mapper/ArticleMapper.xml"/>
+		<mapper resource="com.wools.mapper/vipMapper.xml"/>
+		<mapper resource="com.wools.mapper/rcMapper.xml"/>
+		<mapper resource="com.wools.mapper/rechargeMapper.xml"/>
+		<mapper resource="com.wools.mapper/vip_levelMapper.xml"/>
 	</mappers>
 	
 </configuration>

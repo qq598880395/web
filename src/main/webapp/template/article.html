@@ -29,62 +29,64 @@
             var str = $(this).text();
             var subStr = str.substring(0, 60);
             $(this).html(subStr + (str.length > 10 ? '...' + "<a href='#' class='active'>查看更多</a>" : ''));
+
+                //取得简介图片
+                $.ajax({
+                    url: getRootPath()+'/html/searchArticle',
+                    data:{page:0,limit:0},
+                    type: "get",
+                    datatype:"json",
+                    success:function (data) {
+                        alert(data);
+                        //var jsonarray= $.parseJSON(data);
+                        //var jsonobj =JSON.parse(data);
+                        var count =data.data.length;
+                        alert(count);
+
+                        if (count>0){
+                            for (var n=0;n<count;n++){
+                                // $("#article_box").append(item);
+                                // $('.article-img').each(function () {
+                                //     $(this).attr("src",getRootPath()+"/"+data.data[n].img_src.toString());
+                                // });
+                                var item =$('<div class="layui-card" id="article_item">\n' +
+                                    '        <div class="layui-card-header">'+data.data[n].article_title+'</div>\n' +
+                                    '        <div class="layui-card-body">\n' +
+                                    '            <div class="layui-fluid">\n' +
+                                    '                <div class="layui-row article-row layui-col-space10">\n' +
+                                    '                    <div class="layui-col-xs4">\n' +
+                                    '                        <div>\n' +
+                                    '                            <img id="cardimg-'+n+'" src="'+getRootPath()+"/"+data.data[n].img_src.toString()+'" class="article-img">\n' +
+                                    '                        </div>\n' +
+                                    '                    </div>\n' +
+                                    '                    <div class="layui-col-xs8 ">\n' +
+                                    '                        <div class="article-text" ><p>'+data.data[n].article_text+'</p></div>\n' +
+                                    '                    </div>\n' +
+                                    '                </div>\n' +
+                                    '            </div>\n' +
+                                    '        </div>\n' +
+                                    '    </div>');
+                                // $("#cardhead-"+n+"").text(data.data[n].article_title);
+                                // $("#cardimg-"+n+"").attr("src",getRootPath()+"/"+data.data[n].img_src.toString());
+                                // $(".article-"+n+"").text(data.data[n].article_text);
+                                $("#article_box").append(item);
+                            }
+                        }
+                        // var i=0;
+                        //
+                        // $('.layui-card-header').each(function () {
+                        //     $(this).text(data.data[i].article_title)
+                        //     i++;
+                        // });
+                        // $('.article-text').each(function () {
+                        //     $(this).text(data.data[i].article_text)
+                        //     i++;
+                        // });
+                    }
+                })
         });
 
-            //取得简介图片
-            $.ajax({
-                url: getRootPath()+'/html/searchArticle',
-                data:{page:0,limit:0},
-                type: "get",
-                datatype:"json",
-                success:function (data) {
-                    alert(data);
-                    //var jsonarray= $.parseJSON(data);
-                    //var jsonobj =JSON.parse(data);
-                    var count =data.data.length;
-                    alert(count);
 
-                     if (count>0){
-                         for (var n=0;n<count;n++){
-                             // $("#article_box").append(item);
-                             // $('.article-img').each(function () {
-                             //     $(this).attr("src",getRootPath()+"/"+data.data[n].img_src.toString());
-                             // });
-                             var item =$('<div class="layui-card" id="article_item">\n' +
-                                 '        <div class="layui-card-header">'+data.data[n].article_title+'</div>\n' +
-                                 '        <div class="layui-card-body">\n' +
-                                 '            <div class="layui-fluid">\n' +
-                                 '                <div class="layui-row article-row layui-col-space10">\n' +
-                                 '                    <div class="layui-col-xs4">\n' +
-                                 '                        <div>\n' +
-                                 '                            <img id="cardimg-'+n+'" src="'+getRootPath()+"/"+data.data[n].img_src.toString()+'" class="article-img">\n' +
-                                 '                        </div>\n' +
-                                 '                    </div>\n' +
-                                 '                    <div class="layui-col-xs8 ">\n' +
-                                 '                        <div class="article-text" ><p>'+data.data[n].article_text+'</p></div>\n' +
-                                 '                    </div>\n' +
-                                 '                </div>\n' +
-                                 '            </div>\n' +
-                                 '        </div>\n' +
-                                 '    </div>');
-                              // $("#cardhead-"+n+"").text(data.data[n].article_title);
-                              // $("#cardimg-"+n+"").attr("src",getRootPath()+"/"+data.data[n].img_src.toString());
-                              // $(".article-"+n+"").text(data.data[n].article_text);
-                             $("#article_box").append(item);
-                         }
-                     }
-                     // var i=0;
-                     //
-                     // $('.layui-card-header').each(function () {
-                     //     $(this).text(data.data[i].article_title)
-                     //     i++;
-                     // });
-                     // $('.article-text').each(function () {
-                     //     $(this).text(data.data[i].article_text)
-                     //     i++;
-                     // });
-            }
-            })
 
 
 
