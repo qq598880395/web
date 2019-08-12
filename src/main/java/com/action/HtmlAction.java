@@ -191,26 +191,29 @@ public class HtmlAction {
     public JSONObject searchArticle(int page ,int limit){
         JSONObject jsonArray =new JSONObject();
         JSONArray jsonArray2=new JSONArray();
-        List<Article> article_list =articleService.searchArticle(page,limit);
         int sum =articleService.getArticleCount();
-        if (article_list!=null&& article_list.size()>0){
-            for (Article x: article_list) {
-                JSONObject jsonItem =new JSONObject();
-                jsonItem.put("article_id",x.getArticle_id());
-                jsonItem.put("article_title",x.getArticle_title());
-                jsonItem.put("article_text",x.getArticle_text());
-                jsonItem.put("article_time",x.getArticle_time());
-                jsonItem.put("img_id",x.getImg_id());
-                String img_src =imgService.searchArtImgById(x.getImg_id()).getImg_src();
-                jsonItem.put("img_src", img_src);
-                jsonArray2.add(jsonItem);
+
+            List<Article> article_list =articleService.searchArticle(page,limit);
+            if (article_list!=null&& article_list.size()>0){
+                for (Article x: article_list) {
+                    JSONObject jsonItem =new JSONObject();
+                    jsonItem.put("article_id",x.getArticle_id());
+                    jsonItem.put("article_title",x.getArticle_title());
+                    jsonItem.put("article_text",x.getArticle_text());
+                    jsonItem.put("article_time",x.getArticle_time());
+                    jsonItem.put("img_id",x.getImg_id());
+                    String img_src =imgService.searchArtImgById(x.getImg_id()).getImg_src();
+                    jsonItem.put("img_src", img_src);
+                    jsonArray2.add(jsonItem);
+                }
             }
-        }
-        jsonArray.put("code",0);
-        jsonArray.put("msg","");
-        jsonArray.put("count",sum);
-        jsonArray.put("data",jsonArray2);
-        return jsonArray;
+            jsonArray.put("code",0);
+            jsonArray.put("msg","");
+            jsonArray.put("count",sum);
+            jsonArray.put("data",jsonArray2);
+            return jsonArray;
+
+
     }
 
     //删除指定文章

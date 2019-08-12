@@ -51,17 +51,29 @@ public class ArticleService {
     public List<Article> searchArticle(int page, int limit){
         QueryWrapper qw =new QueryWrapper();
         int count =articleDAO.getArticleCount();
-        int nowPage =(count%limit==0)? count/limit:count/limit+1 ;
+//        int nowPage;
+//        if (page!=0&&limit!=0){
+//             nowPage =(count%limit==0)? count/limit:count/limit+1 ;
+//        }
+
         //越界判断
-        if (page<=0){
-            page =0;
-        }if (page>nowPage){
-            page =nowPage;
+//        if (page<=0){
+//            page =0;
+//        }if (page>nowPage){
+//            page =nowPage;
+//        }
+        if(page==0&&limit==0){
+            List<Article> articleList2 =articleDAO.searchAllArticle();
+            return articleList2;
         }
-        //Page p = new Page(page,limit);
-        //qw.last("limit"+page+","+limit);
         List<Article> articleList =articleDAO.getAllArticle((page-1)*limit,page*limit);
         return articleList;
+    }
+
+    //普通查询文章
+    public List<Article> searchAllArticle(){
+        List Article_list =articleDAO.searchAllArticle();
+        return Article_list;
     }
     //得到文章的总数
     public int getArticleCount(){

@@ -518,25 +518,25 @@
             }
         }),
 
-            $("#form-submit").on("click",function () {
-                var title =$("#form-title").val();
-                var textarea =$("#form-text").val();
-                var imgsrc =$("#imgsrctag").val();
-                alert(imgsrc)
-                $.ajax({
-                    url:getRootPath()+"/upload/uploadArticle",
-                    type:"get",
-                    data:{
-                        "title":title,
-                        "imgsrc":imgsrc,
-                        "textarea":textarea
-                    },
-                    success:function (res) {
-                        alert(res);
-                    },
-                    error:function(error){
-                        console.log(error)
-                    }
+                $("#form-submit").on("click",function () {
+                    var title =$("#form-title").val();
+                    var textarea =$("#form-text").val();
+                    var imgsrc =$("#imgsrctag").val();
+                    alert(imgsrc)
+                    $.ajax({
+                        url:getRootPath()+"/upload/uploadArticle",
+                        type:"get",
+                        data:{
+                            "title":title,
+                            "imgsrc":imgsrc,
+                            "textarea":textarea
+                        },
+                        success:function (res) {
+                            alert(res);
+                        },
+                        error:function(error){
+                            console.log(error)
+                        }
                 });
             });
         form.on('submit(xxx)', function (data) {
@@ -545,7 +545,7 @@
             })
             return false;
         });
-        /*
+        /*啦啦啦啦啦
         form.on('submit(add)',function (data) {
             layer.alert(JSON.stringify(data.field), {
                 title: '最终的提交信息'
