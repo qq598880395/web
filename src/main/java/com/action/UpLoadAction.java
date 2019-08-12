@@ -15,14 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RequestMapping("/upload")
 @Controller
@@ -231,12 +228,12 @@ public class UpLoadAction {
             out.write(file.getBytes());
             out.flush();
             out.close();
-    }catch (IOException e){
-        res.put("code", 1);
-        res.put("msg", "上传出错");
-        res.put("data", resUrl);
-        return res;
-    }
+        }catch (IOException e){
+            res.put("code", 1);
+            res.put("msg", "上传出错");
+            res.put("data", resUrl);
+            return res;
+        }
         res.put("code", 0);
         res.put("msg", "上传成功");
         res.put("data", resUrl);

@@ -110,7 +110,7 @@
     <fieldset class="layui-elem-field layui-field-title">
         <legend>文章编辑</legend>
         <div class="layui-btn-group demoTable">
-            <button class="layui-btn" data-type="isAll">一键删除</button>
+            <button class="layui-btn" data-type="delArticle">一键删除</button>
             <button class="layui-btn" >新增文章</button>
         </div>
         <table id="UploadedArticle" lay-filter="allArticle"></table>
@@ -197,7 +197,7 @@
             ]]
         })
 
-        //一键删除实现
+        //一键删除轮播图片实现
         var $ = layui.$, active = {
             isAll: function () {
                 var checkStatus = table.checkStatus('#UploadedLunboImg')
@@ -216,6 +216,38 @@
                             type: "post",
                             url: getRootPath() + '/html/delMostImg',
                             data: {params: imgJson},
+                            success: function (data) {
+                                layer.closeAll('loading');
+                                if (data == 1) {
+                                    parent.layer.msg('删除成功！', {icon: 1, time: 2000, shade: 0.2});
+                                    location.reload(true);
+                                } else {
+                                    parent.layer.msg('删除失败！', {icon: 2, time: 3000, shade: 0.2});
+                                }
+                            }
+                        })
+                    })
+                }
+            },
+            //一键删除文章
+            delArticle: function () {
+                var checkStatus = table.checkStatus('#UploadedArticle')
+                    , data = checkStatus.data;
+                alert(data)
+                if (data == '')
+                    layer.msg('请先选择要删除的数据');
+                if (data != '') {
+                    var map = [];
+                    for (var i = 0; i < data.length; i++) {
+                        map.push({"img_id": data[i].img_id, "article_id": data[i].article_id});
+                    }
+                    var articleJson = JSON.stringify(map)
+                    // 后台操作
+                    layer.confirm("您确定要删除吗？", function () {
+                        $.ajax({
+                            type: "post",
+                            url: getRootPath()+'/html/delMostArticle',
+                            data: {params: articleJson},
                             success: function (data) {
                                 layer.closeAll('loading');
                                 if (data == 1) {
@@ -486,34 +518,34 @@
             }
         }),
 
-                $("#form-submit").on("click",function () {
-                    var title =$("#form-title").val();
-                    var textarea =$("#form-text").val();
-                    var imgsrc =$("#imgsrctag").val();
-                    alert(imgsrc)
-                    $.ajax({
-                        url:getRootPath()+"/upload/uploadArticle",
-                        type:"get",
-                        data:{
-                            "title":title,
-                            "imgsrc":imgsrc,
-                            "textarea":textarea
-                        },
-                        success:function (res) {
-                            alert(res);
-                        },
-                        error:function(error){
-                            console.log(error)
-                        }
+            $("#form-submit").on("click",function () {
+                var title =$("#form-title").val();
+                var textarea =$("#form-text").val();
+                var imgsrc =$("#imgsrctag").val();
+                alert(imgsrc)
+                $.ajax({
+                    url:getRootPath()+"/upload/uploadArticle",
+                    type:"get",
+                    data:{
+                        "title":title,
+                        "imgsrc":imgsrc,
+                        "textarea":textarea
+                    },
+                    success:function (res) {
+                        alert(res);
+                    },
+                    error:function(error){
+                        console.log(error)
+                    }
                 });
-                });
+            });
         form.on('submit(xxx)', function (data) {
             layer.alert(JSON.stringify(data.field), {
                 title: '最终的提交信息'
             })
             return false;
         });
-        /*啦啦啦啦啦
+        /*
         form.on('submit(add)',function (data) {
             layer.alert(JSON.stringify(data.field), {
                 title: '最终的提交信息'

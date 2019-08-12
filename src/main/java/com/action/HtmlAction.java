@@ -13,6 +13,7 @@ import com.service.ImgService;
 import com.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -219,4 +220,30 @@ public class HtmlAction {
         int n =articleService.delArticle(article_id,img_id);
         return n;
     }
+
+    //一键删除指定文章
+    @ResponseBody
+    @RequestMapping(value = "/delMostArticle")
+    public  int delMostArticle(String params){
+        List testDemos = JSON.parseArray(params);
+        com.alibaba.fastjson.JSONArray articleJson = new com.alibaba.fastjson.JSONArray(testDemos);
+        int n = articleService.delMostArticle(articleJson);
+        DelMostFile1(articleJson);
+        return n;
+    }
+//根据图片id删除工程里的图片
+    private void DelMostFile1(com.alibaba.fastjson.JSONArray articleJson) {
+        com.alibaba.fastjson.JSONArray jsonArray = null;
+        jsonArray = new com.alibaba.fastjson.JSONArray(articleJson);
+        for (int i=0;i<jsonArray.size();i++){
+            int img_id = (int) jsonArray.getJSONObject(i).get("img_id");
+            String src = articleService.selectImgById(img_id);
+            File file = new File(System.getProperty("ROOT") + src);
+            if (file.exists()==true){
+                file.delete();
+//                System.out.println("文件还在嘛：" + file.exists());//判断文件是否删除成功
+            }
+        }
+    }
+
 }

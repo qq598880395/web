@@ -20,4 +20,5 @@
     <select id="getArticleCount" resultType="int">
         select COUNT(article_id) from article ,img where article.img_id = img.img_id
     </select>
+
 </mapper>

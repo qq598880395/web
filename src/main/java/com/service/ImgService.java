@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.dao.ArticleDAO;
 import com.dao.ImgDAO;
 import com.pojo.Img;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class ImgService {
 
     @Autowired
     private ImgDAO imgDAO;
-
+    private ArticleDAO articleDAO;
     //添加图片
     public int addImage(String img_name,String newFilePath,Integer tmpid,String img_href){
         Img img=new Img();
@@ -105,5 +106,6 @@ public class ImgService {
         Img img =imgDAO.selectOne(qw);
         return img;
     }
+
 
 }

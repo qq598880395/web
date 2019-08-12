@@ -3,6 +3,7 @@ package com.service;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -78,6 +79,27 @@ public class ArticleService {
         int Art_n =articleDAO.delete(qw);
         int n=imgDAO.delete(imgQw);
         return Art_n;
+    }
+
+    //根据id批量删除文章
+    public int delMostArticle(JSONArray articleJson) {
+        int n = 0;
+        JSONArray jsonArray = null;
+        jsonArray = new JSONArray(articleJson);
+        System.out.println(jsonArray.size());
+        for (int i=0;i<jsonArray.size();i++){
+            int article_id = (int) jsonArray.getJSONObject(i).get("article_id");
+            System.out.println(article_id);
+            n = articleDAO.deleteById(article_id);
+            System.out.println(n);
+        }
+        return n;
+    }
+
+    //根据id查图片的src
+    public String selectImgById(int img_id) {
+        Img src = imgDAO.selectById(img_id);
+        return src.getImg_src();
     }
 
 }
